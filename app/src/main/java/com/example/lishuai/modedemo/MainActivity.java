@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         } else if (!edSend1.getText().toString().trim().equals(edSend2.getText().toString().trim())) {
             Toast.makeText(myContext, "请确认工号", Toast.LENGTH_LONG).show();
         } else {
-            Intent intent = new Intent(this, MyListActivity.class);
+            Intent intent = new Intent(this, MyUnfinishedListActiity.class);
             intent.putExtra("loginNumber", edSend1.getText().toString().trim());
             startActivity(intent);
         }

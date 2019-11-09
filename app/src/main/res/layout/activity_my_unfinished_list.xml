@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="版幅"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="版形" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="出货日期" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="工单号" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="幅宽" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="本次裁剪" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="本次换片" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="件数" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="层高" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_scan_send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_qr"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:text="扫码"
+                style="@style/text_ok_40px" />
+
+            <TextView
+                android:id="@+id/tv_send"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                style="@style/text_ok_40px"
+                android:text="提交"
+                 />
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recy_view"
+            android:layout_above="@id/ll_scan_send"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>

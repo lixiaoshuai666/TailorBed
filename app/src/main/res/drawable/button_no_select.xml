@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <!-- 填充颜色 -->
+            <solid android:color="#3398d6" />
+            <!-- 矩形的圆角半径 -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <item >
+        <shape android:shape="rectangle">
+            <!-- 填充颜色 -->
+            <solid android:color="#3498fe" />
+            <!-- 矩形的圆角半径 -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</selector>
+	
