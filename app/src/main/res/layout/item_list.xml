@@ -5,90 +5,142 @@
     <LinearLayout
         android:id="@+id/ll_select"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
         android:gravity="center_vertical"
+        android:background="@drawable/standard_button_999999"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
         android:orientation="horizontal">
-
+s
         <ImageView
             android:id="@+id/iv_select"
-            android:layout_width="wrap_content"
+            android:layout_width="27.3dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
+            android:layout_gravity="center"
             android:src="@mipmap/tool_addr_checkbox_normal" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_banhao"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:textColor="#333333"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="999"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="69"
             android:textSize="14sp" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_banxing"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="99" />
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:textColor="#333333"
+            />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
+            android:textColor="#333333"
+            android:layout_marginRight="2dp"
             android:text="11月09日" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_gongdan"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="8"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="12345678" />
+            android:layout_marginLeft="2dp"
+            android:textColor="#333333"
+            android:layout_marginRight="2dp"
+            android:text="73P87658" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_fukuan"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="99" />
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:layout_marginRight="2dp"
+            android:text="98" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_bencicaijian"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:textColor="#333333"
+            android:gravity="center"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="99999" />
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="71238" />
+
+        <include layout="@layout/endways_line"/>
 
         <TextView
             android:id="@+id/tv_bencihuanpian"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="99999" />
+            android:text="85789" />
 
+        <include layout="@layout/endways_line"/>
 
         <EditText
             android:id="@+id/ed_jianshu"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:gravity="center"
             android:background="@null"
-            android:hint="件数"
             android:inputType="number"
+            android:textCursorDrawable="@drawable/edit_cursor_color"
             android:maxLength="3"
             android:padding="0dp"
             android:textSize="14sp" />
 
+        <include layout="@layout/endways_line"/>
+
         <EditText
             android:id="@+id/ed_cenggao"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="1.5dp"
             android:background="@null"
-            android:hint="层高"
+            android:gravity="center"
             android:inputType="number"
             android:maxLength="3"
+            android:textCursorDrawable="@drawable/edit_cursor_color"
             android:padding="0dp"
             android:textSize="14sp" />
 
