@@ -185,7 +185,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     public ArrayList<UnfinishedBean.UnfinishedItemBean> getListData() {
         list.clear();
         for (UnfinishedBean.UnfinishedItemBean bean:myList) {
-            if (bean.getfFloorQty().isEmpty()||bean.getfPcsQty().isEmpty()){
+            if (bean.isSelect()&&(bean.getfFloorQty().isEmpty()||bean.getfPcsQty().isEmpty())){
                 return new ArrayList<>();
             }else if (bean.isSelect()){
                 list.add(bean);

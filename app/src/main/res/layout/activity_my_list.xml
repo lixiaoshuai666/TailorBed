@@ -6,11 +6,98 @@
     android:orientation="vertical">
 
     <include layout="@layout/toolbar_item" />
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:background="#f6f6f6"
+        android:orientation="vertical"
         android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/ll_cenggao"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拉布次数："/>
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/ed_cenggao"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
+                android:padding="0dp"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="长度："/>
+            <EditText
+                android:id="@+id/ed_xxx"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textCursorDrawable="@drawable/edit_cursor_color"
+                android:padding="0dp"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="层高："/>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/color_ebebeb"
+            android:layout_height="1dp"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_margin="15dp"
+            android:hint="请将光标定位在这里再扫码"
+            android:gravity="top"
+            android:minLines="2"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ,."
+            android:id="@+id/et_sanc"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/edit_cursor_color"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/color_ebebeb"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="15dp"
+            android:textSize="16sp"
+            android:padding="5dp"
+            android:id="@+id/tv_delete"
+            android:background="@drawable/button_no_select"
+            android:text="删除"/>
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recy_view"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
