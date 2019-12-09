@@ -41,12 +41,14 @@ import java.util.List;
 public class MyScanActivity extends Activity {
     private Context myContext;
     private IntentScanBean scanBean;
-    private TextView tvTitle, tvIssue, tvDelete;
+    private String buLiaoNumber;
+    private TextView tvTitle, tvIssue, tvDelete,tvCengGao;
     private RelativeLayout rlBack;
-    private EditText edScan;
+    private EditText edScan, edChangDu, edLaBuCiShu;
     private String fuKuan = "1.53";
     private ArrayList<ScanBean> myList = new ArrayList<>();
     private RecyclerView myRecyCler;
+    private int selectNumber;//选择的条目数
     private CareerSelectScanAdapter myAdapter;
 
     @Override
@@ -58,6 +60,7 @@ public class MyScanActivity extends Activity {
         WindowUtils.setStatusBar(this);
         Intent intent = getIntent();
         scanBean = (IntentScanBean) intent.getSerializableExtra("scanBean");
+        buLiaoNumber = intent.getStringExtra("buLiaoNumber");
         initView();
     }
 
@@ -68,6 +71,9 @@ public class MyScanActivity extends Activity {
         edScan = findViewById(R.id.et_sanc);
         myRecyCler = findViewById(R.id.recy_view);
         tvDelete = findViewById(R.id.tv_delete);
+        tvCengGao = findViewById(R.id.tv_cenggao);
+        edChangDu = findViewById(R.id.ed_changdu);
+        edLaBuCiShu = findViewById(R.id.ed_labucishu);
         tvTitle.setText("扫码页");
         tvIssue.setText("保存");
         rlBack.setOnClickListener(new View.OnClickListener() {
@@ -76,12 +82,12 @@ public class MyScanActivity extends Activity {
                 finish();
             }
         });
-        setEditScan();
         myAdapter = new CareerSelectScanAdapter(myList, myContext, myRecyCler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myRecyCler.setLayoutManager(linearLayoutManager);
         myRecyCler.setAdapter(myAdapter);
+        setEditScan();
     }
 
     private void setEditScan() {
@@ -106,7 +112,31 @@ public class MyScanActivity extends Activity {
                 return false;
             }
         });
+        edLaBuCiShu.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String trim = s.toString().trim();
+                if (trim.length() > 0 && trim.startsWith("0")) {
+                    //首位不能为0
+                    s.replace(0, 1, "");
+                }else {
+                    setCengGao();
+                }
+
+            }
+        });
+
+        //监听EditText的回车事件
         edScan.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -143,9 +173,16 @@ public class MyScanActivity extends Activity {
                     myList.remove(bean);
                 }
                 myAdapter.notifyDataSetChanged();
+                setCengGao();
             }
         });
 
+        myAdapter.setInterListent(new CareerSelectScanAdapter.SetRecycListene() {
+            @Override
+            public void setListene(int position) {
+                setCengGao();
+            }
+        });
     }
 
     private void addList(String s) {
@@ -157,7 +194,10 @@ public class MyScanActivity extends Activity {
             scanBean.setfReelNumber(strings.get(1));
             scanBean.setfLotNumber(strings.get(2));
             scanBean.setfActualFabricWidth(strings.get(3));
-            if (!myList.contains(scanBean)) {
+            if (!buLiaoNumber.equals(scanBean.getfFabricCode())) {
+                Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
+                edScan.setText("");
+            } else if (!myList.contains(scanBean)) {
                 myList.add(scanBean);
                 myAdapter.notifyDataSetChanged();
                 edScan.setText("");
@@ -205,5 +245,11 @@ public class MyScanActivity extends Activity {
     public static void closeKeybord(EditText mEditText, Context mContext) {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
+    }
+    private void setCengGao(){
+        String trim = edLaBuCiShu.getText().toString().trim();
+        if (!trim.isEmpty()){
+            tvCengGao.setText(""+(Integer.parseInt(trim)*myAdapter.getListSelect()));
+        }
     }
 }

@@ -26,6 +26,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
     private List<ScanBean> myList;
     private Context mContext;
     private ArrayList<ScanBean> list = new ArrayList<>();
+    private SetRecycListene myListene;
 
     public CareerSelectScanAdapter(List<ScanBean> myList, Context mContext, RecyclerView myRecyView) {
         this.myList = myList;
@@ -79,7 +80,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
         } else {
             myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_checked);
         }
-        myviewholders.llSelect.setOnClickListener(new View.OnClickListener() {
+        myviewholders.ivSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -134,6 +135,19 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
         }
         return list;
     }
+    /**
+     * 获取选择的条目
+     */
+    public int getListSelect() {
+        list.clear();
+        int i=0;
+        for (ScanBean bean : myList) {
+            if (bean.isSelect()){
+                i++;
+            }
+        }
+        return i;
+    }
 
     /**
      * 获取选择的要删除的条目
@@ -146,6 +160,13 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
             }
         }
         return list;
+    }
+    public void setInterListent(SetRecycListene recycListene) {
+        myListene = recycListene;
+    }
+
+    public interface SetRecycListene {
+        void setListene(int position);
     }
 
 }

@@ -50,7 +50,9 @@ public class OkHpptSend {
                         MyApp.getHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                renInterFace.renData(myBean);
+                                if (myBean.code==200){
+                                    renInterFace.renData(myBean);
+                                }
                             }
                         });
                     }

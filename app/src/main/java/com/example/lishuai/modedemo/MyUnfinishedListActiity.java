@@ -117,10 +117,11 @@ public class MyUnfinishedListActiity extends Activity {
                 //扫一扫
                 ArrayList<UnfinishedBean.UnfinishedItemBean> listData = myAdapter.getListData();
                 if (listData.size() == 0) {
-                    Toast.makeText(myContext, "你未选择条目或层高、件数未输入", Toast.LENGTH_LONG).show();
+                    Toast.makeText(myContext, "你未选择条目或层高、件数未输入,版型未选择", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(myContext, MyScanActivity.class);
                     intent.putExtra("scanBean", new IntentScanBean(listData));
+                    intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
                     startActivityForResult(intent,10);
                 }
             }

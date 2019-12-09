@@ -25,7 +25,7 @@
                 android:text="拉布次数："/>
 
             <EditText
-                android:id="@+id/ed_cenggao"
+                android:id="@+id/ed_labucishu"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="长度："/>
             <EditText
-                android:id="@+id/ed_xxx"
+                android:id="@+id/ed_changdu"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -52,11 +52,18 @@
                 android:textCursorDrawable="@drawable/edit_cursor_color"
                 android:padding="0dp"
                 android:textSize="14sp" />
+
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="层高："/>
+                android:layout_height="match_parent"
+                android:text="层高：" />
+            <TextView
+                android:id="@+id/tv_cenggao"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
+                />
+
 
         </LinearLayout>
         <View

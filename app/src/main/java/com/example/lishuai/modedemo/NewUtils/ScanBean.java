@@ -12,7 +12,7 @@ public class ScanBean implements Serializable {
     private String fLotNumber;//布批号
     private String fReelNumber;//卷号
     private String fFabricCode;//布料编码
-    private boolean isSelect;
+    private boolean isSelect=true;
 
     public String getfTheoryWidth() {
         return fTheoryWidth;

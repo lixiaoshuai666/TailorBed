@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -54,6 +55,8 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
         myviewholders.tvBanXing.setText(unfinishedItemBean.getTypeNumber());
         myviewholders.edCenggao.setTag(unfinishedItemBean);
         myviewholders.edJianshu.setTag(unfinishedItemBean);
+        myviewholders.edBenciHuanpian.setTag(unfinishedItemBean);
+        myviewholders.edBenciCaijian.setTag(unfinishedItemBean);
         myviewholders.edCenggao.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -71,7 +74,23 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
 
             }
         });
+        myviewholders.edBenciCaijian.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edBenciCaijian.getTag();
+                tag.setMaxQuantity(Integer.parseInt(s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         myviewholders.edJianshu.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -89,24 +108,58 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
 
             }
         });
+        myviewholders.edBenciHuanpian.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edBenciHuanpian.getTag();
+                tag.setMaxChangePiecesQuantity(Integer.parseInt(s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         myviewholders.edCenggao.setText(unfinishedItemBean.getfFloorQty());
         myviewholders.edJianshu.setText(unfinishedItemBean.getfPcsQty());
+        myviewholders.edBenciCaijian.setText(unfinishedItemBean.getMaxQuantity()+"");//本次裁剪
+        myviewholders.edBenciHuanpian.setText( unfinishedItemBean.getMaxChangePiecesQuantity() + "");//换片
         myviewholders.tvBanXing.setText(unfinishedItemBean.getfTypeGroup());
         myviewholders.tvFuKuan.setText("幅宽:" + unfinishedItemBean.getFabricWidth() + "");
         myviewholders.tvChanPinNum.setText("产品编号:" + unfinishedItemBean.getProductCode());
         myviewholders.tvBanHao.setText("版号:" + unfinishedItemBean.getTypeNumber());
-        myviewholders.tvBenciCaijian.setText("本次裁剪:" + unfinishedItemBean.getMaxQuantity());//本次裁剪
-        myviewholders.tvBenciHuanpian.setText("本次换片:" + unfinishedItemBean.getMaxChangePiecesQuantity() + "");//换片
         myviewholders.tvGongDan.setText("工单:" + unfinishedItemBean.getWorkOrderNo());
 //        myviewholders.tvTime.setText("出货日期:"+unfinishedItemBean.getDueDate());
-
 
         if (!unfinishedItemBean.isSelect()) {
             myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);
         } else {
             myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_checked);
         }
-        myviewholders.llSelect.setOnClickListener(new View.OnClickListener() {
+        myviewholders.edCenggao.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!isSelect) {
+                    Toast.makeText(mContext, "请选择布料编号", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+        });
+        myviewholders.edJianshu.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!isSelect) {
+                    Toast.makeText(mContext, "请选择布料编号", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+        });
+        myviewholders.ivSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isSelect) {
@@ -145,9 +198,8 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     }
 
     public class Myviewholders extends RecyclerView.ViewHolder {
-        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum,
-                tvBenciCaijian, tvBenciHuanpian, tvChangDu;
-        private EditText edCenggao, edJianshu;
+        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum, tvChangDu;
+        private EditText edCenggao, edJianshu,edBenciCaijian,edBenciHuanpian;
         private ImageView ivSelect;
         private LinearLayout llSelect, llBanXing;
 
@@ -165,8 +217,8 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             tvChangDu = itemView.findViewById(R.id.tv_changdu);
             tvChanPinNum = itemView.findViewById(R.id.tv_chanpin_number);
             llBanXing = itemView.findViewById(R.id.ll_banxing);
-            tvBenciCaijian = itemView.findViewById(R.id.tv_bencicaijian);
-            tvBenciHuanpian = itemView.findViewById(R.id.tv_bencihuanpian);
+            edBenciCaijian = itemView.findViewById(R.id.ed_bencicaijian);
+            edBenciHuanpian = itemView.findViewById(R.id.ed_bencihuanpian);
         }
     }
 
@@ -177,7 +229,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     public ArrayList<UnfinishedBean.UnfinishedItemBean> getListData() {
         list.clear();
         for (UnfinishedBean.UnfinishedItemBean bean:myList) {
-            if (bean.isSelect()&&(bean.getfFloorQty().isEmpty()||bean.getfPcsQty().isEmpty())){
+            if (bean.isSelect()&&(bean.getfFloorQty().isEmpty()||bean.getfPcsQty().isEmpty()||bean.getfTypeGroup().isEmpty())){
                 return new ArrayList<>();
             }else if (bean.isSelect()){
                 list.add(bean);
