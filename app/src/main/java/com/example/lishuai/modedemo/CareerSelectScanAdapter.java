@@ -83,10 +83,6 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
 
-                if (bean.getfTheoryWidth().isEmpty()) {
-                    Toast.makeText(mContext, "请输入理论幅宽", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 if (bean.isSelect()) {
                     myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);
                     bean.setSelect(false);
@@ -138,4 +134,18 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
         }
         return list;
     }
+
+    /**
+     * 获取选择的要删除的条目
+     */
+    public ArrayList<ScanBean> getRemakeListData() {
+        list.clear();
+        for (ScanBean bean : myList) {
+            if (bean.isSelect()) {
+                list.add(bean);
+            }
+        }
+        return list;
+    }
+
 }

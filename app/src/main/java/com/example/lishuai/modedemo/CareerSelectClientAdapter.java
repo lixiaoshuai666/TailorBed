@@ -113,14 +113,6 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
                     Toast.makeText(mContext, "请选择布料编号", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (unfinishedItemBean.getfTypeGroup().isEmpty()) {
-                    Toast.makeText(mContext, "请选择版型", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if (unfinishedItemBean.getfFloorQty().isEmpty() || unfinishedItemBean.getfPcsQty().isEmpty()) {
-                    Toast.makeText(mContext, "请输入件数、层高", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 if (unfinishedItemBean.isSelect()) {
                     myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);
                     unfinishedItemBean.setSelect(false);

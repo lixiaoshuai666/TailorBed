@@ -12,6 +12,8 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,31 +106,30 @@ public class MyScanActivity extends Activity {
                 return false;
             }
         });
-        edScan.addTextChangedListener(new TextWatcher() {
+
+        edScan.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s.toString().trim())) {
-                    addList(s.toString().trim());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && KeyEvent.KEYCODE_ENTER == event.getKeyCode() && KeyEvent.ACTION_DOWN == event.getAction())) {
+                    if (!TextUtils.isEmpty(edScan.getText().toString().trim())) {
+                        addList(edScan.getText().toString().trim());
+                    }
+                    return true;
                 }
+                if (!TextUtils.isEmpty(edScan.getText().toString().trim())) {
+                    addList(edScan.getText().toString().trim());
+                }
+                return false;
             }
         });
+
         tvIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<ScanBean> listData = myAdapter.getListData();
                 if (listData.size() == 0) {
                     Toast.makeText(myContext, "你未选择条目或未输入理论幅宽", Toast.LENGTH_LONG).show();
-                }else {
+                } else {
                     finish();
                 }
 
@@ -137,8 +138,8 @@ public class MyScanActivity extends Activity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<ScanBean> listData = myAdapter.getListData();
-                for (ScanBean bean:listData) {
+                ArrayList<ScanBean> listData = myAdapter.getRemakeListData();
+                for (ScanBean bean : listData) {
                     myList.remove(bean);
                 }
                 myAdapter.notifyDataSetChanged();
@@ -159,11 +160,14 @@ public class MyScanActivity extends Activity {
             if (!myList.contains(scanBean)) {
                 myList.add(scanBean);
                 myAdapter.notifyDataSetChanged();
-            }else {
+                edScan.setText("");
+            } else {
                 Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
+                edScan.setText("");
             }
+        } else {
+            edScan.setText("");
         }
-        edScan.setText("");
     }
 
 
