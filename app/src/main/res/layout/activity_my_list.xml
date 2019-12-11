@@ -81,6 +81,8 @@
             android:minLines="2"
             android:id="@+id/et_sanc"
             android:background="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textCursorDrawable="@drawable/edit_cursor_color"
             android:layout_height="wrap_content"/>
         <View

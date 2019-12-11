@@ -25,7 +25,7 @@ import java.util.List;
 public class CareerSelectScanAdapter extends RecyclerView.Adapter {
     private List<ScanBean> myList;
     private Context mContext;
-    private ArrayList<ScanBean> list = new ArrayList<>();
+    public ArrayList<ScanBean> list = new ArrayList<>();
     private SetRecycListene myListene;
 
     public CareerSelectScanAdapter(List<ScanBean> myList, Context mContext, RecyclerView myRecyView) {
@@ -83,7 +83,6 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
         myviewholders.ivSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (bean.isSelect()) {
                     myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);
                     bean.setSelect(false);
@@ -91,6 +90,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
                     myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_checked);
                     bean.setSelect(true);
                 }
+                myListene.setListene(position);
             }
         });
 

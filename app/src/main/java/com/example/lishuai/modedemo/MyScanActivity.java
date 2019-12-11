@@ -1,6 +1,7 @@
 package com.example.lishuai.modedemo;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,11 +46,13 @@ public class MyScanActivity extends Activity {
     private TextView tvTitle, tvIssue, tvDelete,tvCengGao;
     private RelativeLayout rlBack;
     private EditText edScan, edChangDu, edLaBuCiShu;
-    private String fuKuan = "1.53";
+    private String fuKuan;
     private ArrayList<ScanBean> myList = new ArrayList<>();
     private RecyclerView myRecyCler;
     private int selectNumber;//选择的条目数
     private CareerSelectScanAdapter myAdapter;
+    private Dialog dialog;
+    private ArrayList<ScanBean> listData= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class MyScanActivity extends Activity {
         Intent intent = getIntent();
         scanBean = (IntentScanBean) intent.getSerializableExtra("scanBean");
         buLiaoNumber = intent.getStringExtra("buLiaoNumber");
+        fuKuan = String.valueOf(scanBean.getScanList().get(0).getFabricWidth());
         initView();
     }
 
@@ -91,6 +95,7 @@ public class MyScanActivity extends Activity {
     }
 
     private void setEditScan() {
+        edScan.requestFocus();
         if (android.os.Build.VERSION.SDK_INT <= 10) {
             edScan.setInputType(InputType.TYPE_NULL);
         } else {
@@ -168,12 +173,7 @@ public class MyScanActivity extends Activity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<ScanBean> listData = myAdapter.getRemakeListData();
-                for (ScanBean bean : listData) {
-                    myList.remove(bean);
-                }
-                myAdapter.notifyDataSetChanged();
-                setCengGao();
+               deleteItem();
             }
         });
 
@@ -181,6 +181,7 @@ public class MyScanActivity extends Activity {
             @Override
             public void setListene(int position) {
                 setCengGao();
+                setSelectItem();
             }
         });
     }
@@ -201,6 +202,8 @@ public class MyScanActivity extends Activity {
                 myList.add(scanBean);
                 myAdapter.notifyDataSetChanged();
                 edScan.setText("");
+                setCengGao();
+                setSelectItem();
             } else {
                 Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
                 edScan.setText("");
@@ -251,5 +254,33 @@ public class MyScanActivity extends Activity {
         if (!trim.isEmpty()){
             tvCengGao.setText(""+(Integer.parseInt(trim)*myAdapter.getListSelect()));
         }
+    }
+    private void deleteItem(){
+        listData.clear();
+        listData.addAll(myAdapter.getRemakeListData());
+        if (listData.size()<1){
+            Toast.makeText(myContext, "你未选择条目", Toast.LENGTH_LONG).show();
+            return;
+        }
+        dialog = DialogBuilder.getDialog(myContext, "删除后", new DialogBuilder.DialogListener() {
+            @Override
+            public void leftOnclick() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void rightOnclick() {
+                for (ScanBean bean : listData) {
+                    myList.remove(bean);
+                }
+                myAdapter.notifyDataSetChanged();
+                setCengGao();
+                setSelectItem();
+                dialog.dismiss();
+            }
+        });
+    }
+    private void setSelectItem(){
+        tvTitle.setText(myList.size()+"/"+myAdapter.getRemakeListData().size());
     }
 }

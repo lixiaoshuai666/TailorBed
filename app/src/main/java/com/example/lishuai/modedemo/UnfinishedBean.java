@@ -31,7 +31,7 @@ public class UnfinishedBean extends BeasBean  {
          * productLineNo : 1
          * productCode : 1
          * fabricCode : 1
-         * fabricWidth : 0.99
+         * fabricWidth : 0.99幅宽
          * fabricColour : 1
          * boxQuantity : 1
          * bindingQuantity : 3
