@@ -134,7 +134,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
         myviewholders.tvChanPinNum.setText("产品编号:" + unfinishedItemBean.getProductCode());
         myviewholders.tvBanHao.setText("版号:" + unfinishedItemBean.getTypeNumber());
         myviewholders.tvGongDan.setText("工单:" + unfinishedItemBean.getWorkOrderNo());
-//        myviewholders.tvTime.setText("出货日期:"+unfinishedItemBean.getDueDate());
+        myviewholders.tvTime.setText("出货日期:"+unfinishedItemBean.getDueDate());
 
         if (!unfinishedItemBean.isSelect()) {
             myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);

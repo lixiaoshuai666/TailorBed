@@ -43,7 +43,7 @@ public class MyScanActivity extends Activity {
     private Context myContext;
     private IntentScanBean scanBean;
     private String buLiaoNumber;
-    private TextView tvTitle, tvIssue, tvDelete,tvCengGao;
+    private TextView tvTitle, tvIssue, tvDelete, tvCengGao;
     private RelativeLayout rlBack;
     private EditText edScan, edChangDu, edLaBuCiShu;
     private String fuKuan;
@@ -52,7 +52,7 @@ public class MyScanActivity extends Activity {
     private int selectNumber;//选择的条目数
     private CareerSelectScanAdapter myAdapter;
     private Dialog dialog;
-    private ArrayList<ScanBean> listData= new ArrayList<>();
+    private ArrayList<ScanBean> listData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,12 +80,6 @@ public class MyScanActivity extends Activity {
         edLaBuCiShu = findViewById(R.id.ed_labucishu);
         tvTitle.setText("扫码页");
         tvIssue.setText("保存");
-        rlBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         myAdapter = new CareerSelectScanAdapter(myList, myContext, myRecyCler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -134,7 +128,7 @@ public class MyScanActivity extends Activity {
                 if (trim.length() > 0 && trim.startsWith("0")) {
                     //首位不能为0
                     s.replace(0, 1, "");
-                }else {
+                } else {
                     setCengGao();
                 }
 
@@ -173,7 +167,7 @@ public class MyScanActivity extends Activity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               deleteItem();
+                deleteItem();
             }
         });
 
@@ -182,6 +176,12 @@ public class MyScanActivity extends Activity {
             public void setListene(int position) {
                 setCengGao();
                 setSelectItem();
+            }
+        });
+        rlBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goBack();
             }
         });
     }
@@ -249,27 +249,31 @@ public class MyScanActivity extends Activity {
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
     }
-    private void setCengGao(){
+
+    private void setCengGao() {
         String trim = edLaBuCiShu.getText().toString().trim();
-        if (!trim.isEmpty()){
-            tvCengGao.setText(""+(Integer.parseInt(trim)*myAdapter.getListSelect()));
+        if (!trim.isEmpty()) {
+            tvCengGao.setText("" + (Integer.parseInt(trim) * myAdapter.getListSelect()));
         }
     }
-    private void deleteItem(){
+
+    private void deleteItem() {
         listData.clear();
         listData.addAll(myAdapter.getRemakeListData());
-        if (listData.size()<1){
+        if (listData.size() < 1) {
             Toast.makeText(myContext, "你未选择条目", Toast.LENGTH_LONG).show();
             return;
         }
-        dialog = DialogBuilder.getDialog(myContext, "删除后", new DialogBuilder.DialogListener() {
+        dialog = DialogBuilder.getDialog(myContext, "选中的布卷是否用完、布头、报废？","用完","布头/报废" ,new DialogBuilder.DialogListener() {
             @Override
             public void leftOnclick() {
+                //布卷长度为0
                 dialog.dismiss();
             }
 
             @Override
             public void rightOnclick() {
+                //将选中的放入布头表里面
                 for (ScanBean bean : listData) {
                     myList.remove(bean);
                 }
@@ -280,7 +284,64 @@ public class MyScanActivity extends Activity {
             }
         });
     }
-    private void setSelectItem(){
-        tvTitle.setText(myList.size()+"/"+myAdapter.getRemakeListData().size());
+
+    private void setSelectItem() {
+        tvTitle.setText(myList.size() + "/" + myAdapter.getRemakeListData().size());
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack();
+    }
+
+    /**
+     * 返回事件
+     */
+    private void goBack() {
+        listData.clear();
+        listData.addAll(myAdapter.getRemakeListData());
+        if (listData.size() < 1) {
+            finish();
+            return;
+        }
+        dialog = DialogBuilder.getDialog(myContext, "该裁剪单还未完成，是否确定执行", new DialogBuilder.DialogListener() {
+            @Override
+            public void leftOnclick() {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void rightOnclick() {
+                dialog.dismiss();
+                isBuLiaoExhauht();
+            }
+        });
+    }
+
+    /**
+     * 布料是否用完
+     */
+    private void  isBuLiaoExhauht(){
+        dialog = DialogBuilder.getDialog(myContext, "布料是否用完", new DialogBuilder.DialogListener() {
+            @Override
+            public void leftOnclick() {
+                for (ScanBean bean : listData) {
+                    myList.remove(bean);
+                }
+                myAdapter.notifyDataSetChanged();
+                setCengGao();
+                setSelectItem();
+                dialog.dismiss();
+                //将选中的记录到布头表
+            }
+
+            @Override
+            public void rightOnclick() {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+
     }
 }

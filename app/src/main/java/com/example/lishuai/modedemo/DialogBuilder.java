@@ -35,6 +35,32 @@ public class DialogBuilder {
         });
         return dialog;
     }
+    public static Dialog getDialog(Context myContext, String title,String leftStr,String rightStr, final DialogListener dialogListen) {
+        final Dialog dialog = new Dialog(myContext, R.style.MyLoadDialog);
+        View mView = LayoutInflater.from(myContext).inflate(R.layout.dialog_delte_experts, null);
+        TextView mEnter = mView.findViewById(R.id.dialog_web_enter);
+        final TextView dialogLeft = mView.findViewById(R.id.dialog_left);
+        dialogLeft.setText(leftStr);
+        mEnter.setText(rightStr);
+        TextView mTitle = mView.findViewById(R.id.edit_content);
+        mTitle.setText(title);
+        dialog.setContentView(mView);
+        dialog.show();
+        mEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogListen.rightOnclick();
+            }
+        });
+        dialogLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogListen.leftOnclick();
+            }
+        });
+        return dialog;
+    }
+
 
     public interface DialogListener {
         void leftOnclick();
