@@ -53,7 +53,12 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ScanBean tag = (ScanBean) myviewholders.edLiLunChangDu.getTag();
-                tag.setfTheoryWidth(s + "");
+                if (s.toString().isEmpty()){
+                    tag.setTheoryLength(0);
+                }else {
+                    tag.setTheoryLength(Integer.parseInt(s.toString()));
+                }
+
             }
 
             @Override
@@ -62,13 +67,13 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
             }
         });
 
-        myviewholders.edLiLunChangDu.setText(bean.getfTheoryWidth());
+        myviewholders.edLiLunChangDu.setText(bean.getTheoryLength()+"");
         myviewholders.tvBuLiaoNumber.setText("布料编码:"+bean.getfFabricCode());
         myviewholders.tvBuPiNumber.setText("布批号:"+bean.getfLotNumber());
         myviewholders.tvJuanHao.setText("卷号:" + bean.getfReelNumber());
-        myviewholders.tvShiJiFuKuan.setText("实际幅宽:" + bean.getfActualFabricWidth());
-        myviewholders.tvLiLunFuKuan.setText(bean.getfTheoryFabricWidth());
-        if (bean.getfActualFabricWidth().equals(bean.getfTheoryFabricWidth())){
+        myviewholders.tvShiJiFuKuan.setText("实际幅宽:" + bean.getActualFabricWidth());
+        myviewholders.tvLiLunFuKuan.setText(bean.getTheoryFabricWidth()+"");
+        if (bean.getTheoryFabricWidth()==bean.getActualFabricWidth()){
             myviewholders.tvLiLunFuKuan.setTextColor(mContext.getResources().getColor(R.color.color_8a000000));
             //黑色
         }else {
@@ -127,7 +132,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
     public ArrayList<ScanBean> getListData() {
         list.clear();
         for (ScanBean bean : myList) {
-            if (bean.isSelect() && bean.getfTheoryWidth().isEmpty()) {
+            if (bean.isSelect() && bean.getTheoryLength()==0) {
                 return new ArrayList<>();
             } else if (bean.isSelect()) {
                 list.add(bean);

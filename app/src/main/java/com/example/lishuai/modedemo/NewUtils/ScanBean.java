@@ -6,36 +6,36 @@ import java.io.Serializable;
  * 扫码后生成的数据bean
  */
 public class ScanBean implements Serializable {
-    private String fTheoryWidth="";//理论长度
-    private String fTheoryFabricWidth;//理论幅宽
-    private String fActualFabricWidth;//实际幅宽
+    private int theoryLength;//理论长度
+    private double theoryFabricWidth;//理论幅宽
+    private double actualFabricWidth;//实际幅宽
     private String fLotNumber;//布批号
     private String fReelNumber;//卷号
     private String fFabricCode;//布料编码
-    private boolean isSelect=true;
+    private boolean isSelect = true;
 
-    public String getfTheoryWidth() {
-        return fTheoryWidth;
+    public int getTheoryLength() {
+        return theoryLength;
     }
 
-    public void setfTheoryWidth(String fTheoryWidth) {
-        this.fTheoryWidth = fTheoryWidth;
+    public void setTheoryLength(int theoryLength) {
+        this.theoryLength = theoryLength;
     }
 
-    public String getfTheoryFabricWidth() {
-        return fTheoryFabricWidth;
+    public double getTheoryFabricWidth() {
+        return theoryFabricWidth;
     }
 
-    public void setfTheoryFabricWidth(String fTheoryFabricWidth) {
-        this.fTheoryFabricWidth = fTheoryFabricWidth;
+    public void setTheoryFabricWidth(double theoryFabricWidth) {
+        this.theoryFabricWidth = theoryFabricWidth;
     }
 
-    public String getfActualFabricWidth() {
-        return fActualFabricWidth;
+    public double getActualFabricWidth() {
+        return actualFabricWidth;
     }
 
-    public void setfActualFabricWidth(String fActualFabricWidth) {
-        this.fActualFabricWidth = fActualFabricWidth;
+    public void setActualFabricWidth(double actualFabricWidth) {
+        this.actualFabricWidth = actualFabricWidth;
     }
 
     public String getfLotNumber() {
@@ -69,6 +69,7 @@ public class ScanBean implements Serializable {
     public void setSelect(boolean select) {
         isSelect = select;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -79,7 +80,7 @@ public class ScanBean implements Serializable {
         }
         if (obj instanceof ScanBean) {
             ScanBean other = (ScanBean) obj;
-            if (equalInt(this.fReelNumber,other.fReelNumber)){
+            if (equalInt(this.fReelNumber, other.fReelNumber)) {
                 return true;
             }
         }
@@ -93,7 +94,7 @@ public class ScanBean implements Serializable {
         char[] charArr = sb.toString().toCharArray();
         int hash = 0;
 
-        for(char c : charArr) {
+        for (char c : charArr) {
             hash = hash * 131 + c;
         }
         return hash;

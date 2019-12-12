@@ -48,7 +48,7 @@ public class UnfinishedBean extends BeasBean  {
         private String group;
         private String member;
         private String mainSupplement;
-        private int quantity;
+        private int quantity;//件数
         private String dueDate;
         private int productLineNo;
         private String productCode;
@@ -61,9 +61,8 @@ public class UnfinishedBean extends BeasBean  {
         private int maxQuantity;
         private int maxChangePiecesQuantity;
         private boolean isSelect;
-        private String fPcsQty="";//件数
-        private String fFloorQty="";//层高
-        private String fTypeGroup="";//版形
+        private int floor;//层高
+        private String typeGroup="";//版形
 
         public boolean isSelect() {
             return isSelect;
@@ -73,28 +72,20 @@ public class UnfinishedBean extends BeasBean  {
             isSelect = select;
         }
 
-        public String getfPcsQty() {
-            return fPcsQty;
+        public int getFloor() {
+            return floor;
         }
 
-        public void setfPcsQty(String fPcsQty) {
-            this.fPcsQty = fPcsQty;
+        public void setFloor(int floor) {
+            this.floor = floor;
         }
 
-        public String getfFloorQty() {
-            return fFloorQty;
+        public String getTypeGroup() {
+            return typeGroup;
         }
 
-        public void setfFloorQty(String fFloorQty) {
-            this.fFloorQty = fFloorQty;
-        }
-
-        public String getfTypeGroup() {
-            return fTypeGroup;
-        }
-
-        public void setfTypeGroup(String fTypeGroup) {
-            this.fTypeGroup = fTypeGroup;
+        public void setTypeGroup(String typeGroup) {
+            this.typeGroup = typeGroup;
         }
 
         public int getId() {

@@ -46,7 +46,7 @@ public class MyScanActivity extends Activity {
     private TextView tvTitle, tvIssue, tvDelete, tvCengGao;
     private RelativeLayout rlBack;
     private EditText edScan, edChangDu, edLaBuCiShu;
-    private String fuKuan;
+    private double fuKuan;
     private ArrayList<ScanBean> myList = new ArrayList<>();
     private RecyclerView myRecyCler;
     private int selectNumber;//选择的条目数
@@ -64,7 +64,7 @@ public class MyScanActivity extends Activity {
         Intent intent = getIntent();
         scanBean = (IntentScanBean) intent.getSerializableExtra("scanBean");
         buLiaoNumber = intent.getStringExtra("buLiaoNumber");
-        fuKuan = String.valueOf(scanBean.getScanList().get(0).getFabricWidth());
+        fuKuan = scanBean.getScanList().get(0).getFabricWidth();
         initView();
     }
 
@@ -190,11 +190,11 @@ public class MyScanActivity extends Activity {
         List<String> strings = Arrays.asList(s.split(","));
         if (strings.size() > 2) {
             ScanBean scanBean = new ScanBean();
-            scanBean.setfTheoryFabricWidth(fuKuan);
+            scanBean.setTheoryFabricWidth(fuKuan);
             scanBean.setfFabricCode(strings.get(0));
             scanBean.setfReelNumber(strings.get(1));
             scanBean.setfLotNumber(strings.get(2));
-            scanBean.setfActualFabricWidth(strings.get(3));
+            scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
             if (!buLiaoNumber.equals(scanBean.getfFabricCode())) {
                 Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
                 edScan.setText("");
@@ -268,6 +268,7 @@ public class MyScanActivity extends Activity {
             @Override
             public void leftOnclick() {
                 //布卷长度为0
+                setListLong();
                 dialog.dismiss();
             }
 
@@ -341,7 +342,18 @@ public class MyScanActivity extends Activity {
                 finish();
             }
         });
+    }
 
+    /**
+     * 设置选中的长度为0
+     */
+    private void setListLong(){
+        for (ScanBean bean:myList) {
+            if (bean.isSelect()){
+                bean.setTheoryLength(0);
+            }
 
+        }
+        myAdapter.notifyDataSetChanged();
     }
 }

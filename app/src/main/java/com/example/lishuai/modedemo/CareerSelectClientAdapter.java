@@ -66,7 +66,11 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edCenggao.getTag();
-                tag.setfFloorQty(s + "");
+                if (s.toString().isEmpty()) {
+                    tag.setFloor(0);
+                } else {
+                    tag.setFloor(Integer.parseInt(s.toString()));
+                }
             }
 
             @Override
@@ -104,7 +108,11 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edJianshu.getTag();
-                tag.setfPcsQty(s + "");
+                if (s.toString().isEmpty()){
+                    tag.setQuantity(0);
+                }else {
+                    tag.setQuantity(Integer.parseInt(s.toString()));
+                }
             }
 
             @Override
@@ -133,11 +141,11 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
 
             }
         });
-        myviewholders.edCenggao.setText(unfinishedItemBean.getfFloorQty());
-        myviewholders.edJianshu.setText(unfinishedItemBean.getfPcsQty());
+        myviewholders.edCenggao.setText(unfinishedItemBean.getFloor()+"");
+        myviewholders.edJianshu.setText(unfinishedItemBean.getQuantity()+"");//件数
         myviewholders.edBenciCaijian.setText(unfinishedItemBean.getMaxQuantity() + "");//本次裁剪
         myviewholders.edBenciHuanpian.setText(unfinishedItemBean.getMaxChangePiecesQuantity() + "");//换片
-        myviewholders.tvBanXing.setText(unfinishedItemBean.getfTypeGroup());
+        myviewholders.tvBanXing.setText(unfinishedItemBean.getTypeGroup());
         myviewholders.tvFuKuan.setText("幅宽:" + unfinishedItemBean.getFabricWidth() + "");
         myviewholders.tvChanPinNum.setText("产品编号:" + unfinishedItemBean.getProductCode());
         myviewholders.tvBanHao.setText("版号:" + unfinishedItemBean.getTypeNumber());
@@ -190,7 +198,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
                     @Override
                     public void listViewListen(int position, String content) {
                         myviewholders.tvBanXing.setText(content);
-                        unfinishedItemBean.setfTypeGroup(content);
+                        unfinishedItemBean.setTypeGroup(content);
                     }
                 });
 
@@ -237,7 +245,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     public ArrayList<UnfinishedBean.UnfinishedItemBean> getListData() {
         list.clear();
         for (UnfinishedBean.UnfinishedItemBean bean : myList) {
-            if (bean.isSelect() && (bean.getfFloorQty().isEmpty() || bean.getfPcsQty().isEmpty() || bean.getfTypeGroup().isEmpty())) {
+            if (bean.isSelect() && (bean.getFloor()==0 || bean.getQuantity()==0 || bean.getTypeGroup().isEmpty())) {
                 return new ArrayList<>();
             } else if (bean.isSelect()) {
                 list.add(bean);
