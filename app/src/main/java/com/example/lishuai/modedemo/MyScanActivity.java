@@ -28,12 +28,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lishuai.modedemo.NewUtils.DataIntBean;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
 import com.example.lishuai.modedemo.NewUtils.SaveBean;
 import com.example.lishuai.modedemo.NewUtils.ScanBean;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -150,9 +154,6 @@ public class MyScanActivity extends Activity {
                     }
                     return true;
                 }
-                if (!TextUtils.isEmpty(edScan.getText().toString().trim())) {
-                    addList(edScan.getText().toString().trim());
-                }
                 return false;
             }
         });
@@ -198,29 +199,7 @@ public class MyScanActivity extends Activity {
 
     private void addList(String s) {
         List<String> strings = Arrays.asList(s.split(","));
-        if (strings.size() > 2) {
-            ScanBean scanBean = new ScanBean();
-            scanBean.setTheoryFabricWidth(fuKuan);
-            scanBean.setfFabricCode(strings.get(0));
-            scanBean.setfReelNumber(strings.get(1));
-            scanBean.setfLotNumber(strings.get(2));
-            scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-            if (!buLiaoNumber.equals(scanBean.getfFabricCode())) {
-                Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
-                edScan.setText("");
-            } else if (!myList.contains(scanBean)) {
-                myList.add(scanBean);
-                myAdapter.notifyDataSetChanged();
-                edScan.setText("");
-                setCengGao();
-                setSelectItem();
-            } else {
-                Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
-                edScan.setText("");
-            }
-        } else {
-            edScan.setText("");
-        }
+        getLiLunChangdu(strings);
     }
 
 
@@ -285,13 +264,7 @@ public class MyScanActivity extends Activity {
             @Override
             public void rightOnclick() {
                 //将选中的放入布头表里面
-                for (ScanBean bean : listData) {
-                    myList.remove(bean);
-                }
-                myAdapter.notifyDataSetChanged();
-                setCengGao();
-                setSelectItem();
-                dialog.dismiss();
+                deleteScan();
             }
         });
     }
@@ -336,14 +309,8 @@ public class MyScanActivity extends Activity {
         dialog = DialogBuilder.getDialog(myContext, "布料是否用完", new DialogBuilder.DialogListener() {
             @Override
             public void leftOnclick() {
-                for (ScanBean bean : listData) {
-                    myList.remove(bean);
-                }
-                myAdapter.notifyDataSetChanged();
-                setCengGao();
-                setSelectItem();
-                dialog.dismiss();
-                //将选中的记录到布头表
+                //放到布头表里面
+                deleteScan();
             }
 
             @Override
@@ -380,15 +347,78 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttpPost(RequestUrl.detail, BeasBean.class, new RenInterFace() {
             @Override
             protected void renData(BeasBean clazz) {
-                if (clazz.code==200){
+                if (clazz.code == 200) {
                     setResult(12);
                     finish();
+                } else {
+                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, MyApp.getMyGson().toJson(saveBean));
+
+    }
+
+    /**
+     * 删除扫码信息，添加到布头表里面
+     */
+    private void deleteScan() {
+        OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
+            @Override
+            protected void renData(BeasBean clazz) {
+                if (clazz.code == 200) {
+                    //删除成功
+                    for (ScanBean bean : listData) {
+                        myList.remove(bean);
+                    }
+                    myAdapter.notifyDataSetChanged();
+                    setCengGao();
+                    setSelectItem();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }, MyApp.getMyGson().toJson(listData));
+    }
+
+    /**
+     * 根据卷号，查询理论长度
+     *
+     * @param strings
+     */
+    private void getLiLunChangdu(final List<String> strings) {
+        if (strings.size() < 2) {
+            edScan.setText("");
+            return;
+        }
+        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), DataIntBean.class, new RenInterFace<DataIntBean>() {
+            @Override
+            protected void renData(DataIntBean clazz) {
+                if (clazz.code == 200) {
+                    ScanBean scanBean = new ScanBean();
+                    scanBean.setTheoryLength(clazz.getData());
+                    scanBean.setTheoryFabricWidth(fuKuan);
+                    scanBean.setfFabricCode(strings.get(0));
+                    scanBean.setfReelNumber(strings.get(1));
+                    scanBean.setfLotNumber(strings.get(2));
+                    scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
+                    if (!buLiaoNumber.equals(scanBean.getfFabricCode())) {
+                        Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    } else if (!myList.contains(scanBean)) {
+                        myList.add(scanBean);
+                        myAdapter.notifyDataSetChanged();
+                        edScan.setText("");
+                        setCengGao();
+                        setSelectItem();
+                    } else {
+                        Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    }
                 }else {
                     Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                 }
             }
-        }, gson.toJson(saveBean));
-
-
+        });
     }
 }

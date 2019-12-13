@@ -11,8 +11,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.lishuai.modedemo.NewUtils.ScanBean;
 
 import java.util.ArrayList;

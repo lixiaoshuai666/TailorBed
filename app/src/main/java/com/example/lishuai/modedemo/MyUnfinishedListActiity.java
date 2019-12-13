@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -33,12 +32,11 @@ public class MyUnfinishedListActiity extends Activity {
     private ArrayList<String> selectStirng;
     private RecyclerView recyView;
     private ArrayList<UnfinishedBean.UnfinishedItemBean> strList;
-    ArrayList<UnfinishedBean.UnfinishedItemBean> listData=new ArrayList<>();
+    ArrayList<UnfinishedBean.UnfinishedItemBean> listData = new ArrayList<>();
     private CareerSelectClientAdapter myAdapter;
     private TextView tvTitle, tvIssue, tvQr;
     private RelativeLayout rlBack;
     private String unfinishedListUrl;
-    private Gson gson = new Gson();
 
 
     @Override
@@ -112,7 +110,7 @@ public class MyUnfinishedListActiity extends Activity {
             @Override
             public void onClick(View v) {
                 //提交
-
+                sendIssue();
             }
         });
         tvQr.setOnClickListener(new View.OnClickListener() {
@@ -127,13 +125,13 @@ public class MyUnfinishedListActiity extends Activity {
                     OkHpptSend.sendOkHttpPost(RequestUrl.checkDetail, BeasBean.class, new RenInterFace() {
                         @Override
                         protected void renData(BeasBean bean) {
-                            if (bean.code==200) {
+                            if (bean.code == 200) {
                                 sendScan();
-                            }else {
+                            } else {
                                 Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
-                    }, gson.toJson(listData));
+                    }, MyApp.getMyGson().toJson(listData));
                 }
             }
         });
@@ -193,7 +191,7 @@ public class MyUnfinishedListActiity extends Activity {
 
     }
 
-    private void sendScan(){
+    private void sendScan() {
         Intent intent = new Intent(myContext, MyScanActivity.class);
         intent.putExtra("scanBean", new IntentScanBean(listData));
         intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
@@ -202,10 +200,28 @@ public class MyUnfinishedListActiity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==10&&resultCode==12){
+        if (requestCode == 10 && resultCode == 12) {
             //刷新页面
             initGetListData(tvTitle.getText().toString().trim());
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 提交给车间主任审核
+     */
+    private void sendIssue() {
+        OkHpptSend.sendOkHttpPost(RequestUrl.examine, BeasBean.class, new RenInterFace() {
+            @Override
+            protected void renData(BeasBean clazz) {
+                if (clazz.code == 200) {
+                    Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, "");
+
+
     }
 }
