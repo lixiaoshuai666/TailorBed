@@ -29,7 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
+import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
+import com.example.lishuai.modedemo.NewUtils.RenInterFace;
+import com.example.lishuai.modedemo.NewUtils.SaveBean;
 import com.example.lishuai.modedemo.NewUtils.ScanBean;
+import com.google.gson.Gson;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -53,6 +57,7 @@ public class MyScanActivity extends Activity {
     private CareerSelectScanAdapter myAdapter;
     private Dialog dialog;
     private ArrayList<ScanBean> listData = new ArrayList<>();
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,11 +160,16 @@ public class MyScanActivity extends Activity {
         tvIssue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<ScanBean> listData = myAdapter.getListData();
-                if (listData.size() == 0) {
+                listData.clear();
+                listData.addAll(myAdapter.getListData());
+                if (listData.size() < 1) {
                     Toast.makeText(myContext, "你未选择条目或未输入理论幅宽", Toast.LENGTH_LONG).show();
+                } else if (edChangDu.getText().toString().trim().isEmpty() || edChangDu.getText().toString().trim().equals("0")) {
+                    Toast.makeText(myContext, "请输入长度", Toast.LENGTH_LONG).show();
+                } else if (edLaBuCiShu.getText().toString().trim().isEmpty() || edLaBuCiShu.getText().toString().trim().equals("0")) {
+                    Toast.makeText(myContext, "请输入拉布次数", Toast.LENGTH_LONG).show();
                 } else {
-                    finish();
+                    sendSavePost();
                 }
 
             }
@@ -264,7 +274,7 @@ public class MyScanActivity extends Activity {
             Toast.makeText(myContext, "你未选择条目", Toast.LENGTH_LONG).show();
             return;
         }
-        dialog = DialogBuilder.getDialog(myContext, "选中的布卷是否用完、布头、报废？","用完","布头/报废" ,new DialogBuilder.DialogListener() {
+        dialog = DialogBuilder.getDialog(myContext, "选中的布卷是否用完、布头、报废？", "用完", "布头/报废", new DialogBuilder.DialogListener() {
             @Override
             public void leftOnclick() {
                 //布卷长度为0
@@ -322,7 +332,7 @@ public class MyScanActivity extends Activity {
     /**
      * 布料是否用完
      */
-    private void  isBuLiaoExhauht(){
+    private void isBuLiaoExhauht() {
         dialog = DialogBuilder.getDialog(myContext, "布料是否用完", new DialogBuilder.DialogListener() {
             @Override
             public void leftOnclick() {
@@ -347,13 +357,38 @@ public class MyScanActivity extends Activity {
     /**
      * 设置选中的长度为0
      */
-    private void setListLong(){
-        for (ScanBean bean:myList) {
-            if (bean.isSelect()){
+    private void setListLong() {
+        for (ScanBean bean : myList) {
+            if (bean.isSelect()) {
                 bean.setTheoryLength(0);
             }
 
         }
         myAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 请求保存接口
+     */
+    private void sendSavePost() {
+        SaveBean saveBean = new SaveBean();
+        saveBean.setFabrics(listData);
+        saveBean.setTailoringPlans(scanBean.getScanList());
+        saveBean.setFloor(Integer.parseInt(tvCengGao.getText().toString().trim()));
+        saveBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
+        saveBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
+        OkHpptSend.sendOkHttpPost(RequestUrl.detail, BeasBean.class, new RenInterFace() {
+            @Override
+            protected void renData(BeasBean clazz) {
+                if (clazz.code==200){
+                    setResult(12);
+                    finish();
+                }else {
+                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, gson.toJson(saveBean));
+
+
     }
 }

@@ -20,8 +20,10 @@ import android.widget.Toast;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
 
 public class MyUnfinishedListActiity extends Activity {
 
@@ -31,10 +33,12 @@ public class MyUnfinishedListActiity extends Activity {
     private ArrayList<String> selectStirng;
     private RecyclerView recyView;
     private ArrayList<UnfinishedBean.UnfinishedItemBean> strList;
+    ArrayList<UnfinishedBean.UnfinishedItemBean> listData=new ArrayList<>();
     private CareerSelectClientAdapter myAdapter;
     private TextView tvTitle, tvIssue, tvQr;
     private RelativeLayout rlBack;
     private String unfinishedListUrl;
+    private Gson gson = new Gson();
 
 
     @Override
@@ -115,14 +119,21 @@ public class MyUnfinishedListActiity extends Activity {
             @Override
             public void onClick(View v) {
                 //扫一扫
-                ArrayList<UnfinishedBean.UnfinishedItemBean> listData = myAdapter.getListData();
+                listData.clear();
+                listData.addAll(myAdapter.getListData());
                 if (listData.size() == 0) {
                     Toast.makeText(myContext, "你未选择条目或层高、件数未输入,版型未选择", Toast.LENGTH_LONG).show();
                 } else {
-                    Intent intent = new Intent(myContext, MyScanActivity.class);
-                    intent.putExtra("scanBean", new IntentScanBean(listData));
-                    intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
-                    startActivityForResult(intent,10);
+                    OkHpptSend.sendOkHttpPost(RequestUrl.checkDetail, BeasBean.class, new RenInterFace() {
+                        @Override
+                        protected void renData(BeasBean bean) {
+                            if (bean.code==200) {
+                                sendScan();
+                            }else {
+                                Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, gson.toJson(listData));
                 }
             }
         });
@@ -180,5 +191,21 @@ public class MyUnfinishedListActiity extends Activity {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+    }
+
+    private void sendScan(){
+        Intent intent = new Intent(myContext, MyScanActivity.class);
+        intent.putExtra("scanBean", new IntentScanBean(listData));
+        intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
+        startActivityForResult(intent, 10);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==10&&resultCode==12){
+            //刷新页面
+            initGetListData(tvTitle.getText().toString().trim());
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

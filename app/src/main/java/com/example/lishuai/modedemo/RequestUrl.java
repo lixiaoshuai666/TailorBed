@@ -10,6 +10,12 @@ public class RequestUrl {
 
     public static final String fabricCodes=MY_HTTP_URL+"tailoringPlans/fabricCodes";
 
+    public static final String  checkDetail =MY_HTTP_URL+"tailoring/checkDetail";//扫码按钮的数据判断
+
+    public static final String  detail =MY_HTTP_URL+"tailoring/detail";//保存接口
+
+
+
 
 
 }
