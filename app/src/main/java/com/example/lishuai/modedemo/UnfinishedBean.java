@@ -63,6 +63,15 @@ public class UnfinishedBean extends BeasBean  {
         private boolean isSelect;
         private int floor;//层高
         private String typeGroup="";//版形
+        private int typeQuantity;//本次裁剪件数
+
+        public int getTypeQuantity() {
+            return typeQuantity;
+        }
+
+        public void setTypeQuantity(int typeQuantity) {
+            this.typeQuantity = typeQuantity;
+        }
 
         public boolean isSelect() {
             return isSelect;
