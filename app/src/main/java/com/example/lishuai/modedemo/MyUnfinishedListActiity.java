@@ -122,11 +122,11 @@ public class MyUnfinishedListActiity extends Activity {
                 if (listData.size() == 0) {
                     Toast.makeText(myContext, "你未选择条目或层高、件数未输入,版型未选择", Toast.LENGTH_LONG).show();
                 } else {
-                    OkHpptSend.sendOkHttpPost(RequestUrl.checkDetail, BeasBean.class, new RenInterFace() {
+                    OkHpptSend.sendOkHttpPost(RequestUrl.checkDetail, EfficacyBean.class, new RenInterFace<EfficacyBean>() {
                         @Override
-                        protected void renData(BeasBean bean) {
+                        protected void renData(EfficacyBean bean) {
                             if (bean.code == 200) {
-                                sendScan();
+                                sendScan(bean.getData().getId());
                             } else {
                                 Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
                             }
@@ -191,9 +191,10 @@ public class MyUnfinishedListActiity extends Activity {
 
     }
 
-    private void sendScan() {
+    private void sendScan(int taskId) {
         Intent intent = new Intent(myContext, MyScanActivity.class);
         intent.putExtra("scanBean", new IntentScanBean(listData));
+        intent.putExtra("taskId",taskId);
         intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
         startActivityForResult(intent, 10);
     }

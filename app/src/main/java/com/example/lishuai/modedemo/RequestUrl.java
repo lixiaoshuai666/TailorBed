@@ -10,9 +10,9 @@ public class RequestUrl {
 
     public static final String fabricCodes=MY_HTTP_URL+"tailoringPlans/fabricCodes";
 
-    public static final String  checkDetail =MY_HTTP_URL+"tailoring/checkDetail";//扫码按钮的数据判断
+    public static final String  checkDetail =MY_HTTP_URL+"api/tailoringTask/createTask";//扫码按钮的数据判断
 
-    public static final String  detail =MY_HTTP_URL+"tailoring/detail";//保存接口
+    public static final String  detail =MY_HTTP_URL+"api/tailoringTask/spreading";//保存接口
 
     public static final String  toFabricLeft =MY_HTTP_URL+"tailoring/toFabricLeft";//删除扫码信息到布头表
 

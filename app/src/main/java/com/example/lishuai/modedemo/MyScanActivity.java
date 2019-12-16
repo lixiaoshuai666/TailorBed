@@ -58,10 +58,10 @@ public class MyScanActivity extends Activity {
     private ArrayList<ScanBean> myList = new ArrayList<>();
     private RecyclerView myRecyCler;
     private int selectNumber;//选择的条目数
+    private int taskId;
     private CareerSelectScanAdapter myAdapter;
     private Dialog dialog;
     private ArrayList<ScanBean> listData = new ArrayList<>();
-    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +73,7 @@ public class MyScanActivity extends Activity {
         Intent intent = getIntent();
         scanBean = (IntentScanBean) intent.getSerializableExtra("scanBean");
         buLiaoNumber = intent.getStringExtra("buLiaoNumber");
+        taskId=intent.getIntExtra("taskId",0);
         fuKuan = scanBean.getScanList().get(0).getFabricWidth();
         initView();
     }
@@ -340,6 +341,7 @@ public class MyScanActivity extends Activity {
     private void sendSavePost() {
         SaveBean saveBean = new SaveBean();
         saveBean.setFabrics(listData);
+        saveBean.setTaskId(taskId);
         saveBean.setTailoringPlans(scanBean.getScanList());
         saveBean.setFloor(Integer.parseInt(tvCengGao.getText().toString().trim()));
         saveBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));

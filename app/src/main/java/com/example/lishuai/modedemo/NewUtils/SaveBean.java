@@ -11,6 +11,7 @@ public class SaveBean implements Serializable {
     private int floor; //层高
     private int quantity; //长度
     private int spreadingCount; //拉布次数
+    private int taskId; //保存需要的id
 
     public ArrayList<ScanBean> getFabrics() {
         return fabrics;
@@ -34,6 +35,14 @@ public class SaveBean implements Serializable {
 
     public void setFloor(int floor) {
         this.floor = floor;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 
     public int getQuantity() {
