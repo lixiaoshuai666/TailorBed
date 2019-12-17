@@ -9,9 +9,9 @@ public class ScanBean implements Serializable {
     private int theoryLength;//理论长度
     private double theoryFabricWidth;//理论幅宽
     private double actualFabricWidth;//实际幅宽
-    private String fLotNumber;//布批号
-    private String fReelNumber;//卷号
-    private String fFabricCode;//布料编码
+    private String lotNumber;//布批号
+    private String reelNumber;//卷号
+    private String fabricCode;//布料编码
     private boolean isSelect = true;
 
     public int getTheoryLength() {
@@ -38,28 +38,28 @@ public class ScanBean implements Serializable {
         this.actualFabricWidth = actualFabricWidth;
     }
 
-    public String getfLotNumber() {
-        return fLotNumber;
+    public String getLotNumber() {
+        return lotNumber;
     }
 
-    public void setfLotNumber(String fLotNumber) {
-        this.fLotNumber = fLotNumber;
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber;
     }
 
-    public String getfReelNumber() {
-        return fReelNumber;
+    public String getReelNumber() {
+        return reelNumber;
     }
 
-    public void setfReelNumber(String fReelNumber) {
-        this.fReelNumber = fReelNumber;
+    public void setReelNumber(String reelNumber) {
+        this.reelNumber = reelNumber;
     }
 
-    public String getfFabricCode() {
-        return fFabricCode;
+    public String getFabricCode() {
+        return fabricCode;
     }
 
-    public void setfFabricCode(String fFabricCode) {
-        this.fFabricCode = fFabricCode;
+    public void setFabricCode(String fabricCode) {
+        this.fabricCode = fabricCode;
     }
 
     public boolean isSelect() {
@@ -80,7 +80,7 @@ public class ScanBean implements Serializable {
         }
         if (obj instanceof ScanBean) {
             ScanBean other = (ScanBean) obj;
-            if (equalInt(this.fReelNumber, other.fReelNumber)) {
+            if (equalInt(this.reelNumber, other.reelNumber)) {
                 return true;
             }
         }
@@ -90,7 +90,7 @@ public class ScanBean implements Serializable {
     @Override
     public int hashCode() {
         StringBuilder sb = new StringBuilder();
-        sb.append(fReelNumber);
+        sb.append(reelNumber);
         char[] charArr = sb.toString().toCharArray();
         int hash = 0;
 

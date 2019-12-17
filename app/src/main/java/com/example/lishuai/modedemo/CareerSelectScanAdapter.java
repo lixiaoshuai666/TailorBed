@@ -70,9 +70,9 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
         }else {
             myviewholders.edLiLunChangDu.setText(bean.getTheoryLength()+"");
         }
-        myviewholders.tvBuLiaoNumber.setText("布料编码:"+bean.getfFabricCode());
-        myviewholders.tvBuPiNumber.setText("布批号:"+bean.getfLotNumber());
-        myviewholders.tvJuanHao.setText("卷号:" + bean.getfReelNumber());
+        myviewholders.tvBuLiaoNumber.setText("布料编码:"+bean.getFabricCode());
+        myviewholders.tvBuPiNumber.setText("布批号:"+bean.getLotNumber());
+        myviewholders.tvJuanHao.setText("卷号:" + bean.getReelNumber());
         myviewholders.tvShiJiFuKuan.setText("实际幅宽:" + bean.getActualFabricWidth());
         myviewholders.tvLiLunFuKuan.setText(bean.getTheoryFabricWidth()+"");
         if (bean.getTheoryFabricWidth()==bean.getActualFabricWidth()){

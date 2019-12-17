@@ -62,6 +62,7 @@ public class MyScanActivity extends Activity {
     private CareerSelectScanAdapter myAdapter;
     private Dialog dialog;
     private ArrayList<ScanBean> listData = new ArrayList<>();
+    private int number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class MyScanActivity extends Activity {
         Intent intent = getIntent();
         scanBean = (IntentScanBean) intent.getSerializableExtra("scanBean");
         buLiaoNumber = intent.getStringExtra("buLiaoNumber");
-        taskId=intent.getIntExtra("taskId",0);
+        taskId = intent.getIntExtra("taskId", 0);
         fuKuan = scanBean.getScanList().get(0).getFabricWidth();
         initView();
     }
@@ -307,7 +308,7 @@ public class MyScanActivity extends Activity {
      * 布料是否用完
      */
     private void isBuLiaoExhauht() {
-        dialog = DialogBuilder.getDialog(myContext, "布料是否用完", new DialogBuilder.DialogListener() {
+        dialog = DialogBuilder.getDialog(myContext, "布料是否用完？", new DialogBuilder.DialogListener() {
             @Override
             public void leftOnclick() {
                 //放到布头表里面
@@ -350,9 +351,9 @@ public class MyScanActivity extends Activity {
             @Override
             protected void renData(SaveBackBean clazz) {
                 if (clazz.code == 200) {
-                    if (clazz.getData().getCode()==3){
+                    if (clazz.getData().getCode() == 3) {
                         Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
-                    }else {
+                    } else {
                         backDialog(clazz.getData().getCode());
                     }
 
@@ -372,13 +373,7 @@ public class MyScanActivity extends Activity {
             @Override
             protected void renData(BeasBean clazz) {
                 if (clazz.code == 200) {
-                    //删除成功
-                    for (ScanBean bean : listData) {
-                        myList.remove(bean);
-                    }
-                    myAdapter.notifyDataSetChanged();
-                    setCengGao();
-                    setSelectItem();
+                    deleSelect();
                     dialog.dismiss();
                 } else {
                     Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
@@ -397,6 +392,13 @@ public class MyScanActivity extends Activity {
             edScan.setText("");
             return;
         }
+        if (myList.size() > 0) {
+            if (!myList.get(0).getLotNumber().equals(strings.get(2))) {
+                Toast.makeText(myContext, "布匹号不一致", Toast.LENGTH_LONG).show();
+                edScan.setText("");
+                return;
+            }
+        }
         OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), DataIntBean.class, new RenInterFace<DataIntBean>() {
             @Override
             protected void renData(DataIntBean clazz) {
@@ -404,11 +406,11 @@ public class MyScanActivity extends Activity {
                     ScanBean scanBean = new ScanBean();
                     scanBean.setTheoryLength(clazz.getData());
                     scanBean.setTheoryFabricWidth(fuKuan);
-                    scanBean.setfFabricCode(strings.get(0));
-                    scanBean.setfReelNumber(strings.get(1));
-                    scanBean.setfLotNumber(strings.get(2));
+                    scanBean.setFabricCode(strings.get(0));
+                    scanBean.setReelNumber(strings.get(1));
+                    scanBean.setLotNumber(strings.get(2));
                     scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-                    if (!buLiaoNumber.equals(scanBean.getfFabricCode())) {
+                    if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
                         Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
                         edScan.setText("");
                     } else if (!myList.contains(scanBean)) {
@@ -421,7 +423,7 @@ public class MyScanActivity extends Activity {
                         Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
                         edScan.setText("");
                     }
-                }else {
+                } else {
                     Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                 }
             }
@@ -430,13 +432,102 @@ public class MyScanActivity extends Activity {
 
     /**
      * 根据不同的返回，弹不同的dialog
+     *
      * @param type
      */
-    private void backDialog(int type){
+    private void backDialog(int type) {
+        if (type == 1) {
+            dialog = DialogBuilder.getDialog(myContext, "布料是否拉完？", new DialogBuilder.DialogListener() {
+                @Override
+                public void leftOnclick() {
+                    //点击“否”，扫码界面的拉布次数和长度清空，理论长度需重新计算，其它字段保留，
+                    // 继续输入拉布次数、长度。点击“保存”，重新计算“剩余需裁剪数量。
+                    dialog.dismiss();
+                    edChangDu.setText("");
+                    edLaBuCiShu.setText("");
+                    tvCengGao.setText("");
+                    number=0;
+                    resetLiLunNumber(new SetRecycListene() {
+                        @Override
+                        public void setListene() {
+                            number++;
+                            if (number<myList.size()){
+                                resetLiLunNumber(this );
+                            }else {
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                }
 
+                @Override
+                public void rightOnclick() {
+                    //点击“是”，布料剩余数量直接变为0.本扫码界面全部清空，继续扫码,输入拉布次数、长度。(重新上布)。
+                    dialog.dismiss();
+                    restartView();
+                }
+            });
+        } else {
+            dialog = DialogBuilder.getDialog(myContext, "是否继续拉布？", new DialogBuilder.DialogListener() {
+                @Override
+                public void leftOnclick() {
+                    //点击“否”，弹出对话框“布料是否用完？“。
+                    dialog.dismiss();
+                    isBuLiaoExhauht();
+                }
 
-
+                @Override
+                public void rightOnclick() {
+                    //点击“是”，返回扫描界面，继续输入拉布次数和长度
+                    tvCengGao.setText("");
+                    edLaBuCiShu.setText("");
+                    edChangDu.setText("");
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
+    /**
+     * 重置界面数据
+     */
+    private void restartView() {
+        edLaBuCiShu.setText("");
+        edChangDu.setText("");
+        tvCengGao.setText("");
+        tvTitle.setText("扫码");
+        myList.clear();
+        myAdapter.notifyDataSetChanged();
+    }
 
+    /**
+     * 重新获取布料的理论长度
+     */
+    private void resetLiLunNumber(final SetRecycListene listene) {
+            final ScanBean bean = myList.get(number);
+            OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), DataIntBean.class, new RenInterFace<DataIntBean>() {
+                @Override
+                protected void renData(DataIntBean clazz) {
+                    bean.setTheoryLength(clazz.getData());
+                    listene.setListene();
+                }
+            });
+    }
+
+    /**
+     * 删除选中的条目
+     */
+    private void deleSelect(){
+        //删除成功
+        for (ScanBean bean : listData) {
+            myList.remove(bean);
+        }
+        myAdapter.notifyDataSetChanged();
+        setCengGao();
+        setSelectItem();
+    }
+
+    public interface SetRecycListene {
+        void setListene();
+    }
 }
