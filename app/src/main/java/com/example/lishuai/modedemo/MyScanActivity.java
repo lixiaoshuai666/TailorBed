@@ -346,12 +346,16 @@ public class MyScanActivity extends Activity {
         saveBean.setFloor(Integer.parseInt(tvCengGao.getText().toString().trim()));
         saveBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
         saveBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
-        OkHpptSend.sendOkHttpPost(RequestUrl.detail, BeasBean.class, new RenInterFace() {
+        OkHpptSend.sendOkHttpPost(RequestUrl.detail, SaveBackBean.class, new RenInterFace<SaveBackBean>() {
             @Override
-            protected void renData(BeasBean clazz) {
+            protected void renData(SaveBackBean clazz) {
                 if (clazz.code == 200) {
-                    setResult(12);
-                    finish();
+                    if (clazz.getData().getCode()==3){
+                        Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                    }else {
+                        backDialog(clazz.getData().getCode());
+                    }
+
                 } else {
                     Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                 }
@@ -423,4 +427,16 @@ public class MyScanActivity extends Activity {
             }
         });
     }
+
+    /**
+     * 根据不同的返回，弹不同的dialog
+     * @param type
+     */
+    private void backDialog(int type){
+
+
+
+    }
+
+
 }

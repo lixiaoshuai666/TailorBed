@@ -88,9 +88,9 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edBenciCaijian.getTag();
                 if (s.toString().isEmpty()) {
-                    tag.setTypeQuantity(0);
+                    tag.setQuantity(0);
                 } else {
-                    tag.setTypeQuantity(Integer.parseInt(s.toString()));
+                    tag.setQuantity(Integer.parseInt(s.toString()));
                 }
             }
 
@@ -109,9 +109,9 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edJianshu.getTag();
                 if (s.toString().isEmpty()){
-                    tag.setQuantity(0);
+                    tag.setTypeQuantity(0);
                 }else {
-                    tag.setQuantity(Integer.parseInt(s.toString()));
+                    tag.setTypeQuantity(Integer.parseInt(s.toString()));
                 }
             }
 
@@ -141,10 +141,26 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
 
             }
         });
-        myviewholders.edCenggao.setText(unfinishedItemBean.getFloor()+"");
-        myviewholders.edJianshu.setText(unfinishedItemBean.getQuantity()+"");//件数
-        myviewholders.edBenciCaijian.setText(unfinishedItemBean.getTypeQuantity() + "");//本次裁剪
-        myviewholders.edBenciHuanpian.setText(unfinishedItemBean.getMaxChangePiecesQuantity() + "");//换片
+        if (unfinishedItemBean.getFloor()==0){
+            myviewholders.edCenggao.setText("");
+        }else {
+            myviewholders.edCenggao.setText(unfinishedItemBean.getFloor()+"");
+        }
+        if (unfinishedItemBean.getTypeQuantity()==0){//件数
+            myviewholders.edJianshu.setText("");
+        }else {
+            myviewholders.edJianshu.setText(unfinishedItemBean.getTypeQuantity()+"");
+        }
+        if (unfinishedItemBean.getQuantity()==0){//本次裁剪
+            myviewholders.edBenciCaijian.setText( "");
+        }else {
+            myviewholders.edBenciCaijian.setText(unfinishedItemBean.getQuantity()+ "");
+        }
+        if (unfinishedItemBean.getMaxChangePiecesQuantity()==0){//换片
+            myviewholders.edBenciHuanpian.setText("");
+        }else {
+            myviewholders.edBenciHuanpian.setText(unfinishedItemBean.getMaxChangePiecesQuantity() + "");
+        }
         myviewholders.tvBanXing.setText(unfinishedItemBean.getTypeGroup());
         myviewholders.tvFuKuan.setText("幅宽:" + unfinishedItemBean.getFabricWidth() + "");
         myviewholders.tvChanPinNum.setText("产品编号:" + unfinishedItemBean.getProductCode());
