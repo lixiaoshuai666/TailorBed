@@ -130,9 +130,9 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 UnfinishedBean.UnfinishedItemBean tag = (UnfinishedBean.UnfinishedItemBean) myviewholders.edBenciHuanpian.getTag();
                 if (s.toString().isEmpty()) {
-                    tag.setMaxChangePiecesQuantity(0);
+                    tag.setChangePiecesQuantity(0);
                 } else {
-                    tag.setMaxChangePiecesQuantity(Integer.parseInt(s.toString()));
+                    tag.setChangePiecesQuantity(Integer.parseInt(s.toString()));
                 }
             }
 
@@ -156,10 +156,10 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
         }else {
             myviewholders.edBenciCaijian.setText(unfinishedItemBean.getQuantity()+ "");
         }
-        if (unfinishedItemBean.getMaxChangePiecesQuantity()==0){//换片
+        if (unfinishedItemBean.getChangePiecesQuantity()==0){//换片
             myviewholders.edBenciHuanpian.setText("");
         }else {
-            myviewholders.edBenciHuanpian.setText(unfinishedItemBean.getMaxChangePiecesQuantity() + "");
+            myviewholders.edBenciHuanpian.setText(unfinishedItemBean.getChangePiecesQuantity() + "");
         }
         myviewholders.tvBanXing.setText(unfinishedItemBean.getTypeGroup());
         myviewholders.tvFuKuan.setText("幅宽:" + unfinishedItemBean.getFabricWidth() + "");

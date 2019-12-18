@@ -63,6 +63,7 @@ public class MyScanActivity extends Activity {
     private Dialog dialog;
     private ArrayList<ScanBean> listData = new ArrayList<>();
     private int number;
+    private int spreadingId = 0;//布头表需要的一个id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -351,6 +352,7 @@ public class MyScanActivity extends Activity {
             @Override
             protected void renData(SaveBackBean clazz) {
                 if (clazz.code == 200) {
+                    spreadingId = clazz.getData().getSpreadingId();
                     if (clazz.getData().getCode() == 3) {
                         Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                     } else {
@@ -369,6 +371,11 @@ public class MyScanActivity extends Activity {
      * 删除扫码信息，添加到布头表里面
      */
     private void deleteScan() {
+        if (spreadingId != 0) {
+            for (ScanBean bean : listData) {
+                bean.setSpreadingId(spreadingId);
+            }
+        }
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
             @Override
             protected void renData(BeasBean clazz) {
@@ -402,29 +409,25 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), DataIntBean.class, new RenInterFace<DataIntBean>() {
             @Override
             protected void renData(DataIntBean clazz) {
-                if (clazz.code == 200) {
-                    ScanBean scanBean = new ScanBean();
-                    scanBean.setTheoryLength(clazz.getData());
-                    scanBean.setTheoryFabricWidth(fuKuan);
-                    scanBean.setFabricCode(strings.get(0));
-                    scanBean.setReelNumber(strings.get(1));
-                    scanBean.setLotNumber(strings.get(2));
-                    scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-                    if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
-                        Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
-                        edScan.setText("");
-                    } else if (!myList.contains(scanBean)) {
-                        myList.add(scanBean);
-                        myAdapter.notifyDataSetChanged();
-                        edScan.setText("");
-                        setCengGao();
-                        setSelectItem();
-                    } else {
-                        Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
-                        edScan.setText("");
-                    }
+                ScanBean scanBean = new ScanBean();
+                scanBean.setTheoryLength(clazz.getData());
+                scanBean.setTheoryFabricWidth(fuKuan);
+                scanBean.setFabricCode(strings.get(0));
+                scanBean.setReelNumber(strings.get(1));
+                scanBean.setLotNumber(strings.get(2));
+                scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
+                if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
+                    Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
+                    edScan.setText("");
+                } else if (!myList.contains(scanBean)) {
+                    myList.add(scanBean);
+                    myAdapter.notifyDataSetChanged();
+                    edScan.setText("");
+                    setCengGao();
+                    setSelectItem();
                 } else {
-                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                    Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
+                    edScan.setText("");
                 }
             }
         });
@@ -446,14 +449,14 @@ public class MyScanActivity extends Activity {
                     edChangDu.setText("");
                     edLaBuCiShu.setText("");
                     tvCengGao.setText("");
-                    number=0;
+                    number = 0;
                     resetLiLunNumber(new SetRecycListene() {
                         @Override
                         public void setListene() {
                             number++;
-                            if (number<myList.size()){
-                                resetLiLunNumber(this );
-                            }else {
+                            if (number < myList.size()) {
+                                resetLiLunNumber(this);
+                            } else {
                                 myAdapter.notifyDataSetChanged();
                             }
                         }
@@ -504,20 +507,20 @@ public class MyScanActivity extends Activity {
      * 重新获取布料的理论长度
      */
     private void resetLiLunNumber(final SetRecycListene listene) {
-            final ScanBean bean = myList.get(number);
-            OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), DataIntBean.class, new RenInterFace<DataIntBean>() {
-                @Override
-                protected void renData(DataIntBean clazz) {
-                    bean.setTheoryLength(clazz.getData());
-                    listene.setListene();
-                }
-            });
+        final ScanBean bean = myList.get(number);
+        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), DataIntBean.class, new RenInterFace<DataIntBean>() {
+            @Override
+            protected void renData(DataIntBean clazz) {
+                bean.setTheoryLength(clazz.getData());
+                listene.setListene();
+            }
+        });
     }
 
     /**
      * 删除选中的条目
      */
-    private void deleSelect(){
+    private void deleSelect() {
         //删除成功
         for (ScanBean bean : listData) {
             myList.remove(bean);

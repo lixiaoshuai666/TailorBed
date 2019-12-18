@@ -18,6 +18,16 @@ public class SaveBackBean extends BeasBean implements Serializable {
     public class DataBack {
         private int code;//大于0 返回1，小于等于0 返回2 不成立返回3
 
+        private int spreadingId;
+
+        public int getSpreadingId() {
+            return spreadingId;
+        }
+
+        public void setSpreadingId(int spreadingId) {
+            this.spreadingId = spreadingId;
+        }
+
         public void setCode(int code) {
             this.code = code;
         }

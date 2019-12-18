@@ -16,7 +16,7 @@ public class RequestUrl {
 
     public static final String  toFabricLeft =MY_HTTP_URL+"tailoring/toFabricLeft";//删除扫码信息到布头表
 
-    public static final String  examine =MY_HTTP_URL+"tailoring/examine";//删除扫码信息到布头表
+    public static final String  examine =MY_HTTP_URL+"tailoring/examine";//提交给车间主任审核
 
     public static final String  fabricLeftTheoryLength =MY_HTTP_URL+"tailoring/fabricLeftTheoryLength?reelNumber=";//查询理论长度
 

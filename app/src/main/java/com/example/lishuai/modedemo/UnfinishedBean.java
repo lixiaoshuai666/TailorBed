@@ -57,7 +57,7 @@ public class UnfinishedBean extends BeasBean  {
         private String fabricColour;
         private int boxQuantity;
         private int bindingQuantity;
-        private int changePiecesQuantity;
+        private int changePiecesQuantity;//换片
         private int maxQuantity;
         private int maxChangePiecesQuantity;
         private boolean isSelect;

@@ -13,6 +13,15 @@ public class ScanBean implements Serializable {
     private String reelNumber;//卷号
     private String fabricCode;//布料编码
     private boolean isSelect = true;
+    private int spreadingId;//保存后生成的id
+
+    public int getSpreadingId() {
+        return spreadingId;
+    }
+
+    public void setSpreadingId(int spreadingId) {
+        this.spreadingId = spreadingId;
+    }
 
     public int getTheoryLength() {
         return theoryLength;

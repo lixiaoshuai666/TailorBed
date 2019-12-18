@@ -1,6 +1,7 @@
 package com.example.lishuai.modedemo.NewUtils;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.lishuai.modedemo.BeasBean;
 import com.example.lishuai.modedemo.MyApp;
@@ -55,6 +56,8 @@ public class OkHpptSend {
                             public void run() {
                                 if (myBean.code == 200) {
                                     renInterFace.renData(myBean);
+                                }else {
+                                    Toast.makeText(MyApp.getApp(), "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
