@@ -406,15 +406,16 @@ public class MyScanActivity extends Activity {
                 return;
             }
         }
-        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), DataIntBean.class, new RenInterFace<DataIntBean>() {
+        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
             @Override
-            protected void renData(DataIntBean clazz) {
+            protected void renData(GetLILunLeng clazz) {
                 ScanBean scanBean = new ScanBean();
-                scanBean.setTheoryLength(clazz.getData());
+                scanBean.setTheoryLength(clazz.getData().getTheoryLength());
                 scanBean.setTheoryFabricWidth(fuKuan);
                 scanBean.setFabricCode(strings.get(0));
                 scanBean.setReelNumber(strings.get(1));
                 scanBean.setLotNumber(strings.get(2));
+                scanBean.setFagEndList(clazz.getData().getFagEndList());
                 scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
                 if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
                     Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
@@ -508,10 +509,11 @@ public class MyScanActivity extends Activity {
      */
     private void resetLiLunNumber(final SetRecycListene listene) {
         final ScanBean bean = myList.get(number);
-        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), DataIntBean.class, new RenInterFace<DataIntBean>() {
+        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
             @Override
-            protected void renData(DataIntBean clazz) {
-                bean.setTheoryLength(clazz.getData());
+            protected void renData(GetLILunLeng clazz) {
+                bean.setTheoryLength(clazz.getData().getTheoryLength());
+                bean.setFagEndList(clazz.getData().getFagEndList());
                 listene.setListene();
             }
         });

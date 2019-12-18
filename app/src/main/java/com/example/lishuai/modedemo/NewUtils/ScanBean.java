@@ -1,6 +1,9 @@
 package com.example.lishuai.modedemo.NewUtils;
 
+import com.example.lishuai.modedemo.FagEndListBean;
+
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 扫码后生成的数据bean
@@ -14,6 +17,15 @@ public class ScanBean implements Serializable {
     private String fabricCode;//布料编码
     private boolean isSelect = true;
     private int spreadingId;//保存后生成的id
+    private List<FagEndListBean> fagEndList;
+
+    public List<FagEndListBean> getFagEndList() {
+        return fagEndList;
+    }
+
+    public void setFagEndList(List<FagEndListBean> fagEndList) {
+        this.fagEndList = fagEndList;
+    }
 
     public int getSpreadingId() {
         return spreadingId;
