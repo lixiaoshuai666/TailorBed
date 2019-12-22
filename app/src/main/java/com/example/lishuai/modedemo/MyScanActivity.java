@@ -64,6 +64,8 @@ public class MyScanActivity extends Activity {
     private ArrayList<ScanBean> listData = new ArrayList<>();
     private int number;
     private int spreadingId = 0;//布头表需要的一个id
+    private boolean isFinish;
+    private int type;//2 报废 1布头 3用完
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +175,18 @@ public class MyScanActivity extends Activity {
                 } else if (edLaBuCiShu.getText().toString().trim().isEmpty() || edLaBuCiShu.getText().toString().trim().equals("0")) {
                     Toast.makeText(myContext, "请输入拉布次数", Toast.LENGTH_LONG).show();
                 } else {
-                    sendSavePost();
+                    number=0;
+                    resetGetNumber(new SetRecycListene() {
+                        @Override
+                        public void setListene() {
+                            number++;
+                            if (number<listData.size()){
+                                resetGetNumber(this);
+                            }else {
+                                sendSavePost();
+                            }
+                        }
+                    });
                 }
 
             }
@@ -256,17 +269,31 @@ public class MyScanActivity extends Activity {
             Toast.makeText(myContext, "你未选择条目", Toast.LENGTH_LONG).show();
             return;
         }
-        dialog = DialogBuilder.getDialog(myContext, "选中的布卷是否用完、布头、报废？", "用完", "布头/报废", new DialogBuilder.DialogListener() {
+        dialog = DialogBuilder.getDialog(myContext, "选中的布卷是否用完、报废、布头？", "用完", "布头", new DialogBuilder.DialogListener3() {
             @Override
             public void leftOnclick() {
-                //布卷长度为0
-                setListLong();
+                //用完的处理
+                isFinish=false;
+                type=3;
                 dialog.dismiss();
+                deleteScan();
             }
 
             @Override
             public void rightOnclick() {
-                //将选中的放入布头表里面
+                //删除的处理
+                isFinish=false;
+                type=1;
+                dialog.dismiss();
+                deleteScan();
+            }
+
+            @Override
+            public void centreOnclick() {
+                //报废的处理
+                isFinish=false;
+                type=2;
+                dialog.dismiss();
                 deleteScan();
             }
         });
@@ -288,7 +315,7 @@ public class MyScanActivity extends Activity {
         listData.clear();
         listData.addAll(myAdapter.getRemakeListData());
         if (listData.size() < 1) {
-            finish();
+            finishActivity();
             return;
         }
         dialog = DialogBuilder.getDialog(myContext, "该裁剪单还未完成，是否确定执行", new DialogBuilder.DialogListener() {
@@ -313,34 +340,24 @@ public class MyScanActivity extends Activity {
             @Override
             public void leftOnclick() {
                 //放到布头表里面
+                type=1;
+                dialog.dismiss();
                 deleteScan();
             }
 
             @Override
             public void rightOnclick() {
                 dialog.dismiss();
-                finish();
+                finishActivity();
             }
         });
-    }
-
-    /**
-     * 设置选中的长度为0
-     */
-    private void setListLong() {
-        for (ScanBean bean : myList) {
-            if (bean.isSelect()) {
-                bean.setTheoryLength(0);
-            }
-
-        }
-        myAdapter.notifyDataSetChanged();
     }
 
     /**
      * 请求保存接口
      */
     private void sendSavePost() {
+        tvIssue.setEnabled(false);
         SaveBean saveBean = new SaveBean();
         saveBean.setFabrics(listData);
         saveBean.setTaskId(taskId);
@@ -351,6 +368,7 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttpPost(RequestUrl.detail, SaveBackBean.class, new RenInterFace<SaveBackBean>() {
             @Override
             protected void renData(SaveBackBean clazz) {
+                tvIssue.setEnabled(true);
                 if (clazz.code == 200) {
                     spreadingId = clazz.getData().getSpreadingId();
                     if (clazz.getData().getCode() == 3) {
@@ -374,6 +392,10 @@ public class MyScanActivity extends Activity {
         if (spreadingId != 0) {
             for (ScanBean bean : listData) {
                 bean.setSpreadingId(spreadingId);
+                bean.setType(type);
+                if (type==3){//用完的话理论长度为0
+                    bean.setTheoryLength(0);
+                }
             }
         }
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
@@ -381,7 +403,9 @@ public class MyScanActivity extends Activity {
             protected void renData(BeasBean clazz) {
                 if (clazz.code == 200) {
                     deleSelect();
-                    dialog.dismiss();
+                    if (isFinish){
+                        finishActivity();
+                    }
                 } else {
                     Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -477,6 +501,7 @@ public class MyScanActivity extends Activity {
                 public void leftOnclick() {
                     //点击“否”，弹出对话框“布料是否用完？“。
                     dialog.dismiss();
+                    isFinish=true;
                     isBuLiaoExhauht();
                 }
 
@@ -518,6 +543,22 @@ public class MyScanActivity extends Activity {
             }
         });
     }
+    /**
+     * 重新获取布料的理论长度
+     */
+    private void resetGetNumber(final SetRecycListene listene) {
+        final ScanBean bean = listData.get(number);
+        OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
+            @Override
+            protected void renData(GetLILunLeng clazz) {
+                if (clazz.getData().getTheoryLength()!=0){
+                    bean.setTheoryLength(clazz.getData().getTheoryLength());
+                }
+                bean.setFagEndList(clazz.getData().getFagEndList());
+                listene.setListene();
+            }
+        });
+    }
 
     /**
      * 删除选中的条目
@@ -534,5 +575,10 @@ public class MyScanActivity extends Activity {
 
     public interface SetRecycListene {
         void setListene();
+    }
+
+    private void finishActivity(){
+        setResult(12);
+        finish();
     }
 }

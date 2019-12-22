@@ -16,8 +16,17 @@ public class ScanBean implements Serializable {
     private String reelNumber;//卷号
     private String fabricCode;//布料编码
     private boolean isSelect = true;
+    private int type;//报废2，布头1，3用完
     private int spreadingId;//保存后生成的id
     private List<FagEndListBean> fagEndList;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public List<FagEndListBean> getFagEndList() {
         return fagEndList;

@@ -21,6 +21,15 @@ public class FagEndListBean implements Serializable {
     private String reelNumber;
     private String fabricCode;
     private int spreadingId;
+    private int type;//报废2，布头1
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getTheoryLength() {
         return theoryLength;

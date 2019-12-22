@@ -40,6 +40,18 @@
                 android:gravity="center"
                 />
             <TextView
+                android:id="@+id/dialog_centent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="报废"
+                android:visibility="gone"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:padding="7dp"
+                android:textColor="#000000"
+                android:gravity="center"
+                />
+            <TextView
                 android:id="@+id/dialog_web_enter"
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
@@ -48,7 +60,7 @@
                 android:text="是"
                 android:textSize="20sp"
                 android:padding="7dp"
-                android:textColor="#007aff"
+                android:textColor="#000000"
                 android:gravity="center"
                 />
         </LinearLayout>

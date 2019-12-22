@@ -14,7 +14,7 @@
             <ImageView
                 android:id="@+id/login_icon"
                 android:layout_width="100dp"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="70dp"
                 android:src="@mipmap/ansell"
                 android:layout_centerHorizontal="true"
                 android:layout_height="70dp" />
@@ -24,7 +24,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="50dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
