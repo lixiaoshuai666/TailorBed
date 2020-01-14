@@ -20,6 +20,8 @@ public class RequestUrl {
 
     public static final String  fabricLeftTheoryLength =MY_HTTP_URL+"tailoring/fabricLeftTheoryLength?reelNumber=";//查询理论长度
 
+    public static final String  login =MY_HTTP_URL+"api/auth/login";//登陆接口
+
 
 
 

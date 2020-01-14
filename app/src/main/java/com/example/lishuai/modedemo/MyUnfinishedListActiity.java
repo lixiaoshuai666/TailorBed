@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 public class MyUnfinishedListActiity extends Activity {
 
     private Context myContext;
-    private String loginNumber;
     private MyNewDialog myNewDialog;
     private ArrayList<String> selectStirng;
     private RecyclerView recyView;
@@ -46,7 +44,6 @@ public class MyUnfinishedListActiity extends Activity {
         setContentView(R.layout.activity_my_unfinished_list);
         myContext = this;
         Intent intent = getIntent();
-        loginNumber = intent.getStringExtra("loginNumber");
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);// 设置默认键盘不弹出
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 设置设备为竖屏模式
         setTranslucentStatus();
@@ -223,7 +220,7 @@ public class MyUnfinishedListActiity extends Activity {
                     //根据选择布料刷新页面
                     initGetListData(tvTitle.getText().toString().trim());
                 } else {
-                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                    Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }, "");

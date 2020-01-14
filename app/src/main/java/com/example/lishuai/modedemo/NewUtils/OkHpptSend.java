@@ -31,8 +31,11 @@ public class OkHpptSend {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
-                final Request request = new Request.Builder().url(url2).get()
-                        .addHeader("content-type", "application/json").build();
+                final Request request = new Request.Builder()
+                        .url(url2).get()
+                        .addHeader("content-type", "application/json")
+                        .addHeader("token", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("token"))
+                        .build();
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -56,7 +59,7 @@ public class OkHpptSend {
                             public void run() {
                                 if (myBean.code == 200) {
                                     renInterFace.renData(myBean);
-                                }else {
+                                } else {
                                     Toast.makeText(MyApp.getApp(), "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -69,18 +72,20 @@ public class OkHpptSend {
     }
 
     /**
-     * 请求核算系统的接口
+     * post请求
      *
      * @param url2
      */
     public static <T extends BeasBean> void sendOkHttpPost(final String url2, final Class<T> clazz, final RenInterFace renInterFace, final String json) {
-        Log.e("TAG", url2+"---"+json);
+        Log.e("TAG", url2 + "---" + json);
         new Thread() {
             @Override
             public void run() {
                 OkHttpClient client = new OkHttpClient();
                 final Request request = new Request.Builder().url(url2).post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json))
-                        .addHeader("content-type", "application/json").build();
+                        .addHeader("content-type", "application/json")
+                        .addHeader("token", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("token"))
+                        .build();
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {

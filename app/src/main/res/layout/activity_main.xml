@@ -52,7 +52,7 @@
                         android:layout_weight="1"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:inputType="number"
+                        android:inputType="text"
                         android:textCursorDrawable="@drawable/edit_cursor_color"
                         android:layout_height="match_parent"
                         android:hint="请输入员工账号/编号"
@@ -92,7 +92,7 @@
                         android:layout_height="match_parent"
                         android:hint="请输入密码"
                         android:paddingLeft="15dp"
-                        android:inputType="numberPassword" />
+                        android:inputType="textPassword" />
 
                 </LinearLayout>
                 <View

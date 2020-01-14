@@ -13,7 +13,7 @@
         android:name="MyApp"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MyUnfinishedListActiity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MyListActivity"/>
-<!--        <activity android:name=".MyUnfinishedListActiity"/>-->
+        <activity android:name=".MyUnfinishedListActiity"/>
         <activity android:name=".MyScanActivity"
             android:windowSoftInputMode="stateHidden|stateUnchanged"
             />
