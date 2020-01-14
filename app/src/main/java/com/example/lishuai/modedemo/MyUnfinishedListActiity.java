@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,7 @@ public class MyUnfinishedListActiity extends Activity {
         tvTitle = findViewById(R.id.tv_title);
         tvIssue = findViewById(R.id.tv_issue);
         rlBack = findViewById(R.id.rl_back);
+        rlBack.setVisibility(View.GONE);
         tvQr = findViewById(R.id.tv_qr);
         strList = new ArrayList<>();
         myAdapter = new CareerSelectClientAdapter(strList, myContext, recyView);
@@ -203,7 +205,8 @@ public class MyUnfinishedListActiity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 10 && resultCode == 12) {
             //刷新页面
-            initGetListData(tvTitle.getText().toString().trim());
+//            initGetListData(tvTitle.getText().toString().trim());
+            Toast.makeText(myContext, "请把已保存的计划提交给车间主任审核", Toast.LENGTH_LONG).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -217,12 +220,16 @@ public class MyUnfinishedListActiity extends Activity {
             protected void renData(BeasBean clazz) {
                 if (clazz.code == 200) {
                     Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                    //根据选择布料刷新页面
+                    initGetListData(tvTitle.getText().toString().trim());
                 } else {
                     Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
                 }
             }
         }, "");
-
-
+    }
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }
