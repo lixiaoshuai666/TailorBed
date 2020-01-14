@@ -378,7 +378,7 @@ public class MyScanActivity extends Activity {
                     }
 
                 } else {
-                    Toast.makeText(myContext, "服务器异常，请稍后再试", Toast.LENGTH_LONG).show();
+                    Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }, MyApp.getMyGson().toJson(saveBean));
