@@ -35,6 +35,7 @@ public class OkHpptSend {
                         .url(url2).get()
                         .addHeader("content-type", "application/json")
                         .addHeader("token", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("token"))
+                        .addHeader("groupId", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("groupId"))
                         .build();
                 client.newCall(request).enqueue(new Callback() {
                     @Override
@@ -85,6 +86,7 @@ public class OkHpptSend {
                 final Request request = new Request.Builder().url(url2).post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json))
                         .addHeader("content-type", "application/json")
                         .addHeader("token", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("token"))
+                        .addHeader("groupId", SPSave_Current.getSPSave_Current(MyApp.getApp()).getSP("groupId"))
                         .build();
                 client.newCall(request).enqueue(new Callback() {
                     @Override

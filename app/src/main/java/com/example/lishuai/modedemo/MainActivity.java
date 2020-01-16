@@ -16,10 +16,15 @@ import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
 import com.example.lishuai.modedemo.NewUtils.SPSave_Current;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends Activity {
     private Context myContext;
     private EditText edSend1, edSend2;
     private TextView tvSend;
+    private MyNewDialog myNewDialog;
+    private ArrayList<String> selectStirng = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class MainActivity extends Activity {
                 sendLoging();
             }
         });
+        myNewDialog = new MyNewDialog();
     }
 
     private void sendLoging() {
@@ -58,18 +64,35 @@ public class MainActivity extends Activity {
      * 登陆
      */
     private void sendIssue(LoginPostBean bean) {
+        selectStirng.clear();
         OkHpptSend.sendOkHttpPost(RequestUrl.login, LoginDataBean.class, new RenInterFace<LoginDataBean>() {
             @Override
             protected void renData(LoginDataBean clazz) {
                 if (clazz.code == 200) {
+                    for (LoginDataBean.DataEntity.GroupsEntity bean:clazz.getData().getGroups()) {
+                        selectStirng.add(bean.getTeam().trim()+"-"+bean.getTeamMan());
+                    }
                     SPSave_Current.getSPSave_Current(myContext).setSP("token", clazz.getData().getToken());
-                    Intent intent = new Intent(MainActivity.this, MyUnfinishedListActiity.class);
-                    startActivity(intent);
-                    finish();
+                    showDialog(clazz.getData().getGroups());
                 } else {
                     Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }, MyApp.getMyGson().toJson(bean));
+    }
+
+    /**
+     * 点击后要选择对话框
+     */
+    private void showDialog(final List<LoginDataBean.DataEntity.GroupsEntity> list) {
+        myNewDialog.showListDialog(myContext, selectStirng, new MyNewDialog.DialotListViewListene() {
+            @Override
+            public void listViewListen(int position, String content) {
+                SPSave_Current.getSPSave_Current(myContext).setSP("groupId", list.get(position).getId()+"");
+                Intent intent = new Intent(MainActivity.this, MyUnfinishedListActiity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

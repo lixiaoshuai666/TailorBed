@@ -58,7 +58,6 @@ public class MyScanActivity extends Activity {
     private double fuKuan;
     private ArrayList<ScanBean> myList = new ArrayList<>();
     private RecyclerView myRecyCler;
-    private int selectNumber;//选择的条目数
     private int taskId;
     private CareerSelectScanAdapter myAdapter;
     private Dialog dialog;
@@ -444,27 +443,31 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
             @Override
             protected void renData(GetLILunLeng clazz) {
-                ScanBean scanBean = new ScanBean();
-                scanBean.setTheoryLength(clazz.getData().getTheoryLength());
-                scanBean.setTheoryFabricWidth(fuKuan);
-                scanBean.setFabricCode(strings.get(0));
-                scanBean.setReelNumber(strings.get(1));
-                scanBean.setLotNumber(strings.get(2));
-                scanBean.setFagEndList(clazz.getData().getFagEndList());
-                scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-                if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
-                    Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
-                    edScan.setText("");
-                } else if (!myList.contains(scanBean)) {
-                    myList.add(scanBean);
-                    myAdapter.notifyDataSetChanged();
-                    edScan.setText("");
-                    setCengGao();
-                    setSelectItem();
-                } else {
-                    Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
-                    edScan.setText("");
-                }
+               if (clazz.getCode()==200){
+                   ScanBean scanBean = new ScanBean();
+                   scanBean.setTheoryLength(clazz.getData().getTheoryLength());
+                   scanBean.setTheoryFabricWidth(fuKuan);
+                   scanBean.setFabricCode(strings.get(0));
+                   scanBean.setReelNumber(strings.get(1));
+                   scanBean.setLotNumber(strings.get(2));
+                   scanBean.setFagEndList(clazz.getData().getFagEndList());
+                   scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
+                   if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
+                       Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
+                       edScan.setText("");
+                   } else if (!myList.contains(scanBean)) {
+                       myList.add(scanBean);
+                       myAdapter.notifyDataSetChanged();
+                       edScan.setText("");
+                       setCengGao();
+                       setSelectItem();
+                   } else {
+                       Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
+                       edScan.setText("");
+                   }
+               }else {
+                   Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+               }
             }
         });
     }

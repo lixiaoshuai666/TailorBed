@@ -58,6 +58,8 @@ public class MyNewDialog {
         });
         dialog.setContentView(mView);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.setCanceledOnTouchOutside(false);//点空白区域不消失
+        dialog.setCancelable(false);//点返回键不消失
         dialog.show();
 
     }
