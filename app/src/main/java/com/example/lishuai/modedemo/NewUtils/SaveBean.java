@@ -12,6 +12,15 @@ public class SaveBean implements Serializable {
     private int quantity; //长度
     private int spreadingCount; //拉布次数
     private int taskId; //保存需要的id
+    private int spreadingType; //0拉布正常，1表示拉布完成后可以继续
+
+    public int getSpreadingType() {
+        return spreadingType;
+    }
+
+    public void setSpreadingType(int spreadingType) {
+        this.spreadingType = spreadingType;
+    }
 
     public ArrayList<ScanBean> getFabrics() {
         return fabrics;

@@ -66,6 +66,7 @@ public class MyScanActivity extends Activity {
     private int spreadingId = 0;//布头表需要的一个id
     private boolean isFinish;
     private int type;//2 报废 1布头 3用完
+    private int spreadingType;////0拉布正常，1表示拉布完成后可以继续
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -361,6 +362,7 @@ public class MyScanActivity extends Activity {
         SaveBean saveBean = new SaveBean();
         saveBean.setFabrics(listData);
         saveBean.setTaskId(taskId);
+        saveBean.setSpreadingType(spreadingType);
         saveBean.setTailoringPlans(scanBean.getScanList());
         saveBean.setFloor(Integer.parseInt(tvCengGao.getText().toString().trim()));
         saveBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
@@ -371,10 +373,11 @@ public class MyScanActivity extends Activity {
                 tvIssue.setEnabled(true);
                 if (clazz.code == 200) {
                     spreadingId = clazz.getData().getSpreadingId();
-                    if (clazz.getData().getCode() == 3) {
-                        Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
-                    } else {
+                    if (clazz.getData().getCode() == 1||clazz.getData().getCode() == 2) {
                         backDialog(clazz.getData().getCode());
+                    } else {
+                        Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                        spreadingType=0;
                     }
 
                 } else {
@@ -479,6 +482,7 @@ public class MyScanActivity extends Activity {
      */
     private void backDialog(int type) {
         if (type == 1) {
+            spreadingType=0;
             dialog = DialogBuilder.getDialog(myContext, "布料是否拉完？", new DialogBuilder.DialogListener() {
                 @Override
                 public void leftOnclick() {
@@ -510,6 +514,7 @@ public class MyScanActivity extends Activity {
                 }
             });
         } else {
+            spreadingType=1;
             dialog = DialogBuilder.getDialog(myContext, "是否继续拉布？", new DialogBuilder.DialogListener() {
                 @Override
                 public void leftOnclick() {
