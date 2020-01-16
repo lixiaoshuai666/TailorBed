@@ -4,6 +4,7 @@ public class RequestUrl {
     //请求地址前缀
 //    private static final String MY_HTTP_URL="http://198.181.43.41/";
     private static final String MY_HTTP_URL="http://39.98.239.104:8182/";
+//    private static final String MY_HTTP_URL="http://xiaapp1:8182/";
 
 
     public static final String listForPda=MY_HTTP_URL+"tailoringPlans/listForPda";
@@ -14,7 +15,7 @@ public class RequestUrl {
 
     public static final String  detail =MY_HTTP_URL+"api/tailoringTask/spreading";//保存接口
 
-    public static final String  toFabricLeft =MY_HTTP_URL+"tailoring/toFabricLeft";//删除扫码信息到布头表
+    public static final String  toFabricLeft =MY_HTTP_URL+"tailoring/toFabricLeft2";//删除扫码信息到布头表
 
     public static final String  examine =MY_HTTP_URL+"tailoring/examine";//提交给车间主任审核
 

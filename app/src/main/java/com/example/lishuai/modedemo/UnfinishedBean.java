@@ -28,6 +28,7 @@ public class UnfinishedBean extends BeasBean  {
          * mainSupplement : 补
          * quantity : 1
          * dueDate : 2019-11-02T20:38:36.000+0000
+         * demandDate : 需求日期
          * productLineNo : 1
          * productCode : 1
          * fabricCode : 1
@@ -47,9 +48,10 @@ public class UnfinishedBean extends BeasBean  {
         private String typeNumber;
         private String group;
         private String member;
-        private String mainSupplement;
+        private String mainSupplement;//主/补/辅
         private int quantity;//件数
         private String dueDate;
+        private String demandDate;
         private int productLineNo;
         private String productCode;
         private String fabricCode;
@@ -64,6 +66,15 @@ public class UnfinishedBean extends BeasBean  {
         private int floor;//层高
         private String typeGroup="";//版形
         private int typeQuantity;//本次裁剪件数
+
+
+        public String getDemandDate() {
+            return demandDate;
+        }
+
+        public void setDemandDate(String demandDate) {
+            this.demandDate = demandDate;
+        }
 
         public int getTypeQuantity() {
             return typeQuantity;

@@ -166,7 +166,8 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
         myviewholders.tvChanPinNum.setText("产品编号:" + unfinishedItemBean.getProductCode());
         myviewholders.tvBanHao.setText("版号:" + unfinishedItemBean.getTypeNumber());
         myviewholders.tvGongDan.setText("工单:" + unfinishedItemBean.getWorkOrderNo());
-        myviewholders.tvTime.setText("出货日期:" + unfinishedItemBean.getDueDate());
+        myviewholders.tvTime.setText("需求日期:" + unfinishedItemBean.getDemandDate());
+        myviewholders.tvZhu.setText(unfinishedItemBean.getMainSupplement());
 
         if (!unfinishedItemBean.isSelect()) {
             myviewholders.ivSelect.setImageResource(R.mipmap.tool_addr_checkbox_normal);
@@ -230,7 +231,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     }
 
     public class Myviewholders extends RecyclerView.ViewHolder {
-        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum, tvChangDu;
+        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum, tvChangDu,tvZhu;
         private EditText edCenggao, edJianshu, edBenciCaijian, edBenciHuanpian;
         private ImageView ivSelect;
         private LinearLayout llSelect, llBanXing;
@@ -244,6 +245,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             tvBanHao = itemView.findViewById(R.id.tv_banhao);
             tvBanXing = itemView.findViewById(R.id.tv_banxing);
             tvTime = itemView.findViewById(R.id.tv_time);
+            tvZhu = itemView.findViewById(R.id.tv_zhu);
             tvGongDan = itemView.findViewById(R.id.tv_gongdan);
             tvFuKuan = itemView.findViewById(R.id.tv_fukuan);
             tvChangDu = itemView.findViewById(R.id.tv_changdu);

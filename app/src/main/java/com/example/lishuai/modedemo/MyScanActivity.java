@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lishuai.modedemo.NewUtils.DataIntBean;
+import com.example.lishuai.modedemo.NewUtils.DeleteScanBean;
 import com.example.lishuai.modedemo.NewUtils.IntentScanBean;
 import com.example.lishuai.modedemo.NewUtils.OkHpptSend;
 import com.example.lishuai.modedemo.NewUtils.RenInterFace;
@@ -389,6 +390,12 @@ public class MyScanActivity extends Activity {
      * 删除扫码信息，添加到布头表里面
      */
     private void deleteScan() {
+        int quantity = Integer.parseInt(edChangDu.getText().toString().trim());
+        int spreadingCount = Integer.parseInt(edLaBuCiShu.getText().toString().trim());
+        if (quantity<1||spreadingCount<1){
+            Toast.makeText(myContext, "请输入长度和拉布次数", Toast.LENGTH_LONG).show();
+            return;
+        }
         if (spreadingId != 0) {
             for (ScanBean bean : listData) {
                 bean.setSpreadingId(spreadingId);
@@ -398,6 +405,10 @@ public class MyScanActivity extends Activity {
                 }
             }
         }
+        DeleteScanBean deleteScanBean = new DeleteScanBean();
+        deleteScanBean.setFabrics(listData);
+        deleteScanBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
+        deleteScanBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
             @Override
             protected void renData(BeasBean clazz) {
@@ -410,7 +421,7 @@ public class MyScanActivity extends Activity {
                     Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
-        }, MyApp.getMyGson().toJson(listData));
+        }, MyApp.getMyGson().toJson(deleteScanBean));
     }
 
     /**
