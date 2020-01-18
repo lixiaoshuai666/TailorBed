@@ -404,7 +404,6 @@ public class MyScanActivity extends Activity {
         }
         for (ScanBean bean : listData) {
             bean.setSpreadingId(spreadingId);
-            bean.setType(type);
             if (type == 3) {//用完的话理论长度为0
                 bean.setTheoryLength(0);
             }
@@ -413,6 +412,7 @@ public class MyScanActivity extends Activity {
         deleteScanBean.setFabrics(listData);
         deleteScanBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
         deleteScanBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
+        deleteScanBean.setType(type);
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
             @Override
             protected void renData(BeasBean clazz) {
@@ -456,6 +456,7 @@ public class MyScanActivity extends Activity {
                     scanBean.setReelNumber(strings.get(1));
                     scanBean.setLotNumber(strings.get(2));
                     scanBean.setFagEndList(clazz.getData().getFagEndList());
+                    scanBean.setType(clazz.getData().getType());
                     scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
                     if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
                         Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();

@@ -7,7 +7,16 @@ import java.util.List;
 public class DeleteScanBean implements Serializable {
     private int quantity;//长度
     private int spreadingCount;//次数
+    private int type;//次数
     private List<ScanBean> fabrics;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public int getQuantity() {
         return quantity;
