@@ -455,10 +455,16 @@ public class MyScanActivity extends Activity {
                     scanBean.setFabricCode(strings.get(0));
                     scanBean.setReelNumber(strings.get(1));
                     scanBean.setLotNumber(strings.get(2));
+                    scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
                     scanBean.setFagEndList(clazz.getData().getFagEndList());
                     scanBean.setType(clazz.getData().getType());
-                    scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-                    if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
+                    if (clazz.getData().getType() == 3) {//用完
+                        Toast.makeText(myContext, "布料已用完", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    } else if (clazz.getData().getType() == 2) {//报废
+                        Toast.makeText(myContext, "布料已报废", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    } else if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
                         Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
                         edScan.setText("");
                     } else if (!myList.contains(scanBean)) {
