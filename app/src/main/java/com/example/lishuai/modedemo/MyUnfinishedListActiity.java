@@ -225,8 +225,4 @@ public class MyUnfinishedListActiity extends Activity {
             }
         }, "");
     }
-    @Override
-    public void onBackPressed() {
-        return;
-    }
 }

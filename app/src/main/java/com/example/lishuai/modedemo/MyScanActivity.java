@@ -176,14 +176,14 @@ public class MyScanActivity extends Activity {
                 } else if (edLaBuCiShu.getText().toString().trim().isEmpty() || edLaBuCiShu.getText().toString().trim().equals("0")) {
                     Toast.makeText(myContext, "请输入拉布次数", Toast.LENGTH_LONG).show();
                 } else {
-                    number=0;
+                    number = 0;
                     resetGetNumber(new SetRecycListene() {
                         @Override
                         public void setListene() {
                             number++;
-                            if (number<listData.size()){
+                            if (number < listData.size()) {
                                 resetGetNumber(this);
-                            }else {
+                            } else {
                                 sendSavePost();
                             }
                         }
@@ -195,6 +195,10 @@ public class MyScanActivity extends Activity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (TextUtils.isEmpty(edChangDu.getText().toString().trim()) || TextUtils.isEmpty(edLaBuCiShu.getText().toString().trim())) {
+                    Toast.makeText(myContext, "请输入长度和拉布次数", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 deleteItem();
             }
         });
@@ -274,8 +278,8 @@ public class MyScanActivity extends Activity {
             @Override
             public void leftOnclick() {
                 //用完的处理
-                isFinish=false;
-                type=3;
+                isFinish = false;
+                type = 3;
                 dialog.dismiss();
                 deleteScan();
             }
@@ -283,8 +287,8 @@ public class MyScanActivity extends Activity {
             @Override
             public void rightOnclick() {
                 //删除的处理
-                isFinish=false;
-                type=1;
+                isFinish = false;
+                type = 1;
                 dialog.dismiss();
                 deleteScan();
             }
@@ -292,8 +296,8 @@ public class MyScanActivity extends Activity {
             @Override
             public void centreOnclick() {
                 //报废的处理
-                isFinish=false;
-                type=2;
+                isFinish = false;
+                type = 2;
                 dialog.dismiss();
                 deleteScan();
             }
@@ -341,7 +345,7 @@ public class MyScanActivity extends Activity {
             @Override
             public void leftOnclick() {
                 //放到布头表里面
-                type=1;
+                type = 1;
                 dialog.dismiss();
                 deleteScan();
             }
@@ -373,11 +377,11 @@ public class MyScanActivity extends Activity {
                 tvIssue.setEnabled(true);
                 if (clazz.code == 200) {
                     spreadingId = clazz.getData().getSpreadingId();
-                    if (clazz.getData().getCode() == 1||clazz.getData().getCode() == 2) {
+                    if (clazz.getData().getCode() == 1 || clazz.getData().getCode() == 2) {
                         backDialog(clazz.getData().getCode());
                     } else {
                         Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
-                        spreadingType=0;
+                        spreadingType = 0;
                     }
 
                 } else {
@@ -394,17 +398,15 @@ public class MyScanActivity extends Activity {
     private void deleteScan() {
         int quantity = Integer.parseInt(edChangDu.getText().toString().trim());
         int spreadingCount = Integer.parseInt(edLaBuCiShu.getText().toString().trim());
-        if (quantity<1||spreadingCount<1){
-            Toast.makeText(myContext, "请输入长度和拉布次数", Toast.LENGTH_LONG).show();
+        if (quantity < 1 || spreadingCount < 1) {
+            Toast.makeText(myContext, "长度和拉布次数必须大于0", Toast.LENGTH_LONG).show();
             return;
         }
-        if (spreadingId != 0) {
-            for (ScanBean bean : listData) {
-                bean.setSpreadingId(spreadingId);
-                bean.setType(type);
-                if (type==3){//用完的话理论长度为0
-                    bean.setTheoryLength(0);
-                }
+        for (ScanBean bean : listData) {
+            bean.setSpreadingId(spreadingId);
+            bean.setType(type);
+            if (type == 3) {//用完的话理论长度为0
+                bean.setTheoryLength(0);
             }
         }
         DeleteScanBean deleteScanBean = new DeleteScanBean();
@@ -416,7 +418,7 @@ public class MyScanActivity extends Activity {
             protected void renData(BeasBean clazz) {
                 if (clazz.code == 200) {
                     deleSelect();
-                    if (isFinish){
+                    if (isFinish) {
                         finishActivity();
                     }
                 } else {
@@ -446,31 +448,32 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + strings.get(1), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
             @Override
             protected void renData(GetLILunLeng clazz) {
-               if (clazz.getCode()==200){
-                   ScanBean scanBean = new ScanBean();
-                   scanBean.setTheoryLength(clazz.getData().getTheoryLength());
-                   scanBean.setTheoryFabricWidth(fuKuan);
-                   scanBean.setFabricCode(strings.get(0));
-                   scanBean.setReelNumber(strings.get(1));
-                   scanBean.setLotNumber(strings.get(2));
-                   scanBean.setFagEndList(clazz.getData().getFagEndList());
-                   scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
-                   if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
-                       Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
-                       edScan.setText("");
-                   } else if (!myList.contains(scanBean)) {
-                       myList.add(scanBean);
-                       myAdapter.notifyDataSetChanged();
-                       edScan.setText("");
-                       setCengGao();
-                       setSelectItem();
-                   } else {
-                       Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
-                       edScan.setText("");
-                   }
-               }else {
-                   Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
-               }
+                if (clazz.getCode() == 200) {
+                    ScanBean scanBean = new ScanBean();
+                    scanBean.setTheoryLength(clazz.getData().getTheoryLength());
+                    scanBean.setTheoryFabricWidth(fuKuan);
+                    scanBean.setFabricCode(strings.get(0));
+                    scanBean.setReelNumber(strings.get(1));
+                    scanBean.setLotNumber(strings.get(2));
+                    scanBean.setFagEndList(clazz.getData().getFagEndList());
+                    scanBean.setActualFabricWidth(Double.parseDouble(strings.get(3)));
+                    if (!buLiaoNumber.equals(scanBean.getFabricCode())) {
+                        Toast.makeText(myContext, "布料编号不一致", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    } else if (!myList.contains(scanBean)) {
+                        myList.add(scanBean);
+                        myAdapter.notifyDataSetChanged();
+                        edScan.setText("");
+                        setCengGao();
+                        setSelectItem();
+                    } else {
+                        Toast.makeText(myContext, "重复扫码", Toast.LENGTH_LONG).show();
+                        edScan.setText("");
+                    }
+                } else {
+                    edScan.setText("");
+                    Toast.makeText(myContext, clazz.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -482,7 +485,7 @@ public class MyScanActivity extends Activity {
      */
     private void backDialog(int type) {
         if (type == 1) {
-            spreadingType=0;
+            spreadingType = 0;
             dialog = DialogBuilder.getDialog(myContext, "布料是否拉完？", new DialogBuilder.DialogListener() {
                 @Override
                 public void leftOnclick() {
@@ -514,13 +517,13 @@ public class MyScanActivity extends Activity {
                 }
             });
         } else {
-            spreadingType=1;
+            spreadingType = 1;
             dialog = DialogBuilder.getDialog(myContext, "是否继续拉布？", new DialogBuilder.DialogListener() {
                 @Override
                 public void leftOnclick() {
                     //点击“否”，弹出对话框“布料是否用完？“。
                     dialog.dismiss();
-                    isFinish=true;
+                    isFinish = true;
                     isBuLiaoExhauht();
                 }
 
@@ -562,6 +565,7 @@ public class MyScanActivity extends Activity {
             }
         });
     }
+
     /**
      * 重新获取布料的理论长度
      */
@@ -570,7 +574,7 @@ public class MyScanActivity extends Activity {
         OkHpptSend.sendOkHttp(RequestUrl.fabricLeftTheoryLength + bean.getReelNumber(), GetLILunLeng.class, new RenInterFace<GetLILunLeng>() {
             @Override
             protected void renData(GetLILunLeng clazz) {
-                if (clazz.getData().getTheoryLength()!=0){
+                if (clazz.getData().getTheoryLength() != 0) {
                     bean.setTheoryLength(clazz.getData().getTheoryLength());
                 }
                 bean.setFagEndList(clazz.getData().getFagEndList());
@@ -596,7 +600,7 @@ public class MyScanActivity extends Activity {
         void setListene();
     }
 
-    private void finishActivity(){
+    private void finishActivity() {
         setResult(12);
         finish();
     }

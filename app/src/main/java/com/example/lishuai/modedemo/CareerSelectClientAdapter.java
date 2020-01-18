@@ -231,7 +231,7 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
     }
 
     public class Myviewholders extends RecyclerView.ViewHolder {
-        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum, tvChangDu,tvZhu;
+        private TextView tvBanHao, tvBanXing, tvTime, tvGongDan, tvFuKuan, tvChanPinNum, tvZhu;
         private EditText edCenggao, edJianshu, edBenciCaijian, edBenciHuanpian;
         private ImageView ivSelect;
         private LinearLayout llSelect, llBanXing;
@@ -248,7 +248,6 @@ public class CareerSelectClientAdapter extends RecyclerView.Adapter {
             tvZhu = itemView.findViewById(R.id.tv_zhu);
             tvGongDan = itemView.findViewById(R.id.tv_gongdan);
             tvFuKuan = itemView.findViewById(R.id.tv_fukuan);
-            tvChangDu = itemView.findViewById(R.id.tv_changdu);
             tvChanPinNum = itemView.findViewById(R.id.tv_chanpin_number);
             llBanXing = itemView.findViewById(R.id.ll_banxing);
             edBenciCaijian = itemView.findViewById(R.id.ed_bencicaijian);

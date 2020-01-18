@@ -81,15 +81,9 @@
             android:layout_marginTop="5dp"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/tv_changdu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="长度:xxx" />
-            <TextView
                 android:id="@+id/tv_zhu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:text="" />
             <LinearLayout
                 android:layout_width="wrap_content"
