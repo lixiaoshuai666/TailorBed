@@ -9,7 +9,7 @@ public class SaveBean implements Serializable {
     private ArrayList<ScanBean> fabrics;
     private ArrayList<UnfinishedBean.UnfinishedItemBean> tailoringPlans;
     private int floor; //层高
-    private int quantity; //长度
+    private double quantity; //长度
     private int spreadingCount; //拉布次数
     private int taskId; //保存需要的id
     private int spreadingType; //0拉布正常，1表示拉布完成后可以继续
@@ -54,11 +54,11 @@ public class SaveBean implements Serializable {
         this.taskId = taskId;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 

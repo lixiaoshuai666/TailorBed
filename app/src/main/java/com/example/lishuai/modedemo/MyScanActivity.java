@@ -171,7 +171,7 @@ public class MyScanActivity extends Activity {
                 listData.addAll(myAdapter.getListData());
                 if (listData.size() < 1) {
                     Toast.makeText(myContext, "你未选择条目或未输入理论幅宽", Toast.LENGTH_LONG).show();
-                } else if (edChangDu.getText().toString().trim().isEmpty() || edChangDu.getText().toString().trim().equals("0")) {
+                } else if (edChangDu.getText().toString().trim().isEmpty() || edChangDu.getText().toString().trim().isEmpty()) {
                     Toast.makeText(myContext, "请输入长度", Toast.LENGTH_LONG).show();
                 } else if (edLaBuCiShu.getText().toString().trim().isEmpty() || edLaBuCiShu.getText().toString().trim().equals("0")) {
                     Toast.makeText(myContext, "请输入拉布次数", Toast.LENGTH_LONG).show();
@@ -369,7 +369,7 @@ public class MyScanActivity extends Activity {
         saveBean.setSpreadingType(spreadingType);
         saveBean.setTailoringPlans(scanBean.getScanList());
         saveBean.setFloor(Integer.parseInt(tvCengGao.getText().toString().trim()));
-        saveBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
+        saveBean.setQuantity(Double.valueOf(edChangDu.getText().toString().trim()));
         saveBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
         OkHpptSend.sendOkHttpPost(RequestUrl.detail, SaveBackBean.class, new RenInterFace<SaveBackBean>() {
             @Override
@@ -396,7 +396,7 @@ public class MyScanActivity extends Activity {
      * 删除扫码信息，添加到布头表里面
      */
     private void deleteScan() {
-        int quantity = Integer.parseInt(edChangDu.getText().toString().trim());
+        double quantity = Double.valueOf(edChangDu.getText().toString().trim());
         int spreadingCount = Integer.parseInt(edLaBuCiShu.getText().toString().trim());
         if (quantity < 1 || spreadingCount < 1) {
             Toast.makeText(myContext, "长度和拉布次数必须大于0", Toast.LENGTH_LONG).show();
@@ -410,7 +410,7 @@ public class MyScanActivity extends Activity {
         }
         DeleteScanBean deleteScanBean = new DeleteScanBean();
         deleteScanBean.setFabrics(listData);
-        deleteScanBean.setQuantity(Integer.parseInt(edChangDu.getText().toString().trim()));
+        deleteScanBean.setQuantity(Double.valueOf(edChangDu.getText().toString().trim()));
         deleteScanBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
         deleteScanBean.setType(type);
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
