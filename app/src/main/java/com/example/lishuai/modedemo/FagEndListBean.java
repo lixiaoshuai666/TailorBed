@@ -14,7 +14,7 @@ public class FagEndListBean implements Serializable {
      * spreadingId : 12
      */
 
-    private int theoryLength;
+    private double theoryLength;
     private double theoryFabricWidth;
     private double actualFabricWidth;
     private String lotNumber;
@@ -31,11 +31,11 @@ public class FagEndListBean implements Serializable {
         this.type = type;
     }
 
-    public int getTheoryLength() {
+    public double getTheoryLength() {
         return theoryLength;
     }
 
-    public void setTheoryLength(int theoryLength) {
+    public void setTheoryLength(double theoryLength) {
         this.theoryLength = theoryLength;
     }
 
