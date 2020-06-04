@@ -54,7 +54,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
                 if (s.toString().isEmpty()){
                     tag.setTheoryLength(0);
                 }else {
-                    tag.setTheoryLength(Integer.parseInt(s.toString()));
+                    tag.setTheoryLength(Double.valueOf(s.toString()));
                 }
 
             }
@@ -64,7 +64,7 @@ public class CareerSelectScanAdapter extends RecyclerView.Adapter {
 
             }
         });
-        myviewholders.edLiLunChangDu.setText(bean.getTheoryLength()+"");
+        myviewholders.edLiLunChangDu.setText(String.valueOf(bean.getTheoryLength()));
         myviewholders.tvBuLiaoNumber.setText("布料编码:"+bean.getFabricCode());
         myviewholders.tvBuPiNumber.setText("布批号:"+bean.getLotNumber());
         myviewholders.tvJuanHao.setText("卷号:" + bean.getReelNumber());

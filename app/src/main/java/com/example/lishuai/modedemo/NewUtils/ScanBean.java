@@ -9,7 +9,7 @@ import java.util.List;
  * 扫码后生成的数据bean
  */
 public class ScanBean implements Serializable {
-    private int theoryLength;//理论长度
+    private double theoryLength;//理论长度
     private double theoryFabricWidth;//理论幅宽
     private double actualFabricWidth;//实际幅宽
     private String lotNumber;//布批号
@@ -44,11 +44,11 @@ public class ScanBean implements Serializable {
         this.spreadingId = spreadingId;
     }
 
-    public int getTheoryLength() {
+    public double getTheoryLength() {
         return theoryLength;
     }
 
-    public void setTheoryLength(int theoryLength) {
+    public void setTheoryLength(double theoryLength) {
         this.theoryLength = theoryLength;
     }
 

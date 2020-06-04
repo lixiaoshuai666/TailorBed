@@ -26,7 +26,7 @@ public class GetLILunLeng extends BeasBean implements Serializable {
          * fagEndList : [{"theoryLength":1,"theoryFabricWidth":1.32,"actualFabricWidth":1.32,"lotNumber":"2ddd","reelNumber":"12dddd","fabricCode":"223ddd","spreadingId":12},{"theoryLength":1,"theoryFabricWidth":1.32,"actualFabricWidth":1.32,"lotNumber":"2ddd","reelNumber":"12dddd","fabricCode":"223ddd","spreadingId":12}]
          */
 
-        private int theoryLength;
+        private double theoryLength;
         private int type;//布料的类型，布头，报废
         private List<FagEndListBean> fagEndList;
 
@@ -38,11 +38,11 @@ public class GetLILunLeng extends BeasBean implements Serializable {
             this.type = type;
         }
 
-        public int getTheoryLength() {
+        public double getTheoryLength() {
             return theoryLength;
         }
 
-        public void setTheoryLength(int theoryLength) {
+        public void setTheoryLength(double theoryLength) {
             this.theoryLength = theoryLength;
         }
 
