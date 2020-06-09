@@ -20,6 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<!--        废弃-->
         <activity android:name=".MyListActivity"/>
         <activity android:name=".MyUnfinishedListActiity"/>
         <activity android:name=".MyScanActivity"

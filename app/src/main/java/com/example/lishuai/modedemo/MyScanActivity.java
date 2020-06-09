@@ -195,10 +195,10 @@ public class MyScanActivity extends Activity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(edChangDu.getText().toString().trim()) || TextUtils.isEmpty(edLaBuCiShu.getText().toString().trim())) {
-                    Toast.makeText(myContext, "请输入长度和拉布次数", Toast.LENGTH_LONG).show();
-                    return;
-                }
+//                if (TextUtils.isEmpty(edChangDu.getText().toString().trim()) || TextUtils.isEmpty(edLaBuCiShu.getText().toString().trim())) {
+//                    Toast.makeText(myContext, "请输入长度和拉布次数", Toast.LENGTH_LONG).show();
+//                    return;
+//                }
                 deleteItem();
             }
         });
@@ -396,11 +396,13 @@ public class MyScanActivity extends Activity {
      * 删除扫码信息，添加到布头表里面
      */
     private void deleteScan() {
-        double quantity = Double.valueOf(edChangDu.getText().toString().trim());
-        int spreadingCount = Integer.parseInt(edLaBuCiShu.getText().toString().trim());
-        if (quantity < 1 || spreadingCount < 1) {
-            Toast.makeText(myContext, "长度和拉布次数必须大于0", Toast.LENGTH_LONG).show();
-            return;
+        double quantity =0;
+        if (!edChangDu.getText().toString().trim().isEmpty()){
+            quantity = Double.valueOf(edChangDu.getText().toString().trim());
+        }
+        int spreadingCount =0;
+        if (!edLaBuCiShu.getText().toString().trim().isEmpty()){
+            spreadingCount = Integer.parseInt(edLaBuCiShu.getText().toString().trim());
         }
         for (ScanBean bean : listData) {
             bean.setSpreadingId(spreadingId);
@@ -410,8 +412,8 @@ public class MyScanActivity extends Activity {
         }
         DeleteScanBean deleteScanBean = new DeleteScanBean();
         deleteScanBean.setFabrics(listData);
-        deleteScanBean.setQuantity(Double.valueOf(edChangDu.getText().toString().trim()));
-        deleteScanBean.setSpreadingCount(Integer.parseInt(edLaBuCiShu.getText().toString().trim()));
+        deleteScanBean.setQuantity(quantity);
+        deleteScanBean.setSpreadingCount(spreadingCount);
         deleteScanBean.setType(type);
         OkHpptSend.sendOkHttpPost(RequestUrl.toFabricLeft, BeasBean.class, new RenInterFace() {
             @Override
