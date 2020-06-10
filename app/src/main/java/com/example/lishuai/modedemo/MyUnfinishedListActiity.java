@@ -1,6 +1,7 @@
 package com.example.lishuai.modedemo;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -36,6 +37,7 @@ public class MyUnfinishedListActiity extends Activity {
     private TextView tvTitle, tvIssue, tvQr;
     private RelativeLayout rlBack;
     private String unfinishedListUrl;
+    private Dialog dialog;
 
 
     @Override
@@ -127,7 +129,22 @@ public class MyUnfinishedListActiity extends Activity {
                             if (bean.code == 200) {
                                 sendScan(bean.getData().getId());
                             } else {
-                                Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
+                                if (bean.code == 800103) {
+                                    dialog = DialogBuilder.getDialog(myContext, "换片数量超过最大换片数量，是否忽略？", new DialogBuilder.DialogListener() {
+                                        @Override
+                                        public void leftOnclick() {
+                                            dialog.dismiss();
+                                        }
+
+                                        @Override
+                                        public void rightOnclick() {
+                                            dialog.dismiss();
+                                            sendScan();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
                     }, MyApp.getMyGson().toJson(listData));
@@ -193,7 +210,7 @@ public class MyUnfinishedListActiity extends Activity {
     private void sendScan(int taskId) {
         Intent intent = new Intent(myContext, MyScanActivity.class);
         intent.putExtra("scanBean", new IntentScanBean(listData));
-        intent.putExtra("taskId",taskId);
+        intent.putExtra("taskId", taskId);
         intent.putExtra("buLiaoNumber", tvTitle.getText().toString().trim());
         startActivityForResult(intent, 10);
     }
@@ -224,5 +241,27 @@ public class MyUnfinishedListActiity extends Activity {
                 }
             }
         }, "");
+    }
+
+    /**
+     * 忽略换片数量
+     */
+    private void sendScan() {
+        listData.clear();
+        listData.addAll(myAdapter.getListData());
+        if (listData.size() == 0) {
+            Toast.makeText(myContext, "你未选择条目或层高、件数未输入,版型未选择", Toast.LENGTH_LONG).show();
+        } else {
+            OkHpptSend.sendOkHttpPost(RequestUrl.checkDetail+"?skipChangePiecesQuantity=800103", EfficacyBean.class, new RenInterFace<EfficacyBean>() {
+                @Override
+                protected void renData(EfficacyBean bean) {
+                    if (bean.code == 200) {
+                        sendScan(bean.getData().getId());
+                    } else {
+                        Toast.makeText(myContext, bean.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }, MyApp.getMyGson().toJson(listData));
+        }
     }
 }
