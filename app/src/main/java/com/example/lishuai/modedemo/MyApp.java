@@ -4,6 +4,7 @@ import android.app.Application;
 import android.os.Handler;
 
 import com.google.gson.Gson;
+import com.umeng.commonsdk.UMConfigure;
 
 public class MyApp extends Application {
     private static Application myApp;
@@ -14,6 +15,8 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
         myApp = this;
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE,"");
+
     }
 
     public static Application getApp() {
